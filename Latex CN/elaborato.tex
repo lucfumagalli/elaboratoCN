@@ -82,7 +82,6 @@ Possiamo, quindi, andare a sostituire:
         &=\frac{12hf'(x) + O(h^5)}{12} = hf'(x)+O(h^5)
     \end{aligned}
 \end{equation}
-\textbf{Da rivedere ultimi calcoli!!}
 \pagebreak
 \paragraph{Esercizio 2:}
 Matlab utilizza la doppia precisione IEEE. Stabilire, pertanto, il nesso tra la variabile
@@ -588,7 +587,7 @@ Mentre la soluzione generata da \(x=A\setminus b\) è:
         -4.5249e-01
     \end{pmatrix}
 \end{equation*}
-\paragraph{Esercizio 10:}Data la function Matlab \\
+\paragraph{Esercizio 11:}Data la function Matlab \\
 \begin{lstlisting}[frame=single]
 function [A1,A2,b1,b2] = linsis(n,simme)
 %
@@ -640,7 +639,59 @@ Perciò utilizzando i risultati come input della \textit{function} \texttt{mialu
     grande, ci fa capire che siamo di fronte ad un problema mal condizionato. \\
     Questo è dovuto all'operazione con cui otteniamo la matrice A2, in particolare all'operazione: \texttt{ diag ([1e-10 2/n:1/n:1])}, in cui il primo elemento della matrice 
     diagonale è molto vicino allo zero
-
     \textbf{DA FINIRE!}
 \end{enumerate}
+\paragraph{Esercizio 12:} Risolvere, utilizzando la \textit{function} \texttt{mialdlt}, i sistemi lineari generati da\\ \texttt{[A1,A2,b1,b2]=linsis(5,1)}. 
+Commentare l’accuratezza dei risultati ottenuti, dandone spiegazione esaustiva.
+\paragraph{Soluzione:}
+\paragraph{Ercizio 13:}Utilizzare la \textit{function} \texttt{miaqr} per risolvere, nel senso dei minimi quadrati, i sistemi lineari sovradeterminati\\
+\texttt{Ax = b, \;\;\;\;\;\;(D*A)x = (D*b),\;\;\;\;\;\; (D1*A)x = (D1*b),}\\
+definiti dai seguenti dati:\\\\
+\texttt{
+A = [ 1 3 2; 3 5 4; 5 7 6; 3 6 4; 1 4 2 ]; \\
+b=[15 28 4133 22]';\\
+D = diag(1:5);\\
+D1 = diag(pi*[1 1 1 1 1]).}\\\\
+Calcolare le corrispondenti soluzioni e residui, e commentare i risultati ottenuti.
+\paragraph{Soluzione:}
+\paragraph{Esercizio 14:}Scrivere una function Matlab,\\
+\texttt{[x,nit] = newton(fun,jacobian,x0,tol,maxit)}\\
+che implementi efficientemente il metodo di Newton per risolvere sistemi di equazioni nonlineari. 
+Curare particolarmente il criterio di arresto, che deve essere analogo a quello usato nel caso scalare. 
+La seconda variabile, se specificata, ritorna il numero di iterazioni eseguite. Prevedere opportuni valori 
+di \textit{default} per gli ultimi due parametri di ingresso.
+\paragraph{Soluzione:}
+
+\paragraph{Esercizio 15:} Usare la function del precedente esercizio per risolvere, a partire dal vettore iniziale nullo, 
+il sistema nonlineare derivante dalla determinazione del punto stazionario della funzione:
+
+\begin{equation*} 
+    f(\boldsymbol{x})=\frac{1}{2}\boldsymbol{x}^TQ\boldsymbol{x}-\boldsymbol{e}^T\left[ \sin(\frac{\pi}{2}\boldsymbol{x})+\boldsymbol{x}\right],\;\;\;\;\;\;
+    \boldsymbol{e}=\frac{1}{100}
+    \begin{pmatrix}
+        1\\
+        2\\
+        \vdots \\
+        100
+    \end{pmatrix}
+    \in \mathbb{R}^{100},
+\end{equation*}
+\begin{equation*}
+    Q=
+    \begin{pmatrix}
+        2 & 1 &  & \\
+        1 & \ddots &\ddots& \\
+        &\ddots &\ddots &1 \\
+        & &  1&2
+    \end{pmatrix}
+    \in \mathbb{R}^{100\times 100}, \;\;\;\;\;\;\;\sin(\frac{\pi}{2}\boldsymbol{x}) =
+    \begin{pmatrix}
+        \sin(\frac{\pi}{2}x_1)\\
+        \sin(\frac{\pi}{2}x_2)\\
+        \vdots \\
+        \sin(\frac{\pi}{2}x_{100})
+    \end{pmatrix}
+\end{equation*}
+utilizzando tolleranze \texttt{tol = 1e-3, 1e-8, 1e-13}. Graficare la soluzione e tabulare in modo con- veniente i risultati ottenuti.
+\paragraph{Soluzione:}
 \end{document}
