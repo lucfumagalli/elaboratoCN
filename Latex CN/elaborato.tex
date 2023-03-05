@@ -6,10 +6,10 @@
 \usepackage{fancyhdr}
 \geometry{a4paper, top=2cm, bottom=2cm, left=1cm, right=1.5cm,  heightrounded, bindingoffset=5mm}
 \pagestyle{fancy}
-\fancyhead[C]{Università degli studi di Firenze}
-\fancyhead[RO]{Calcolo Numerico}
-\fancyhead[L]{Luca Fumagalli}
-\fancyfoot[C]{\thepage} % Visualizza il numero di pagina al centro
+\fancyfoot[RO]{}
+\fancyhead[RO]{Calcolo Numerico, Università degli studi di Firenze}
+\fancyhead[L]{Alessandro De Cicco, Luca Fumagalli}
+\fancyfoot[C]{\thepage}
 
 \usepackage{listings}
 \usepackage{color} %red, green, blue, yellow, cyan, magenta, black, white
@@ -42,9 +42,9 @@
 \huge Elaborato Calcolo Numerico\\[0.5cm]
 
 \vspace{20mm}
-\small Autore
+\small Autori
 
-\Large Luca Fumagalli\\[0.5cm]
+\Large Alessandro De Cicco (matr.) \\ Luca Fumagalli (matr.7004476)\\[0.5cm]
 
 \vspace{10mm}
 
@@ -644,6 +644,40 @@ Perciò utilizzando i risultati come input della \textit{function} \texttt{mialu
 \paragraph{Esercizio 12:} Risolvere, utilizzando la \textit{function} \texttt{mialdlt}, i sistemi lineari generati da\\ \texttt{[A1,A2,b1,b2]=linsis(5,1)}. 
 Commentare l’accuratezza dei risultati ottenuti, dandone spiegazione esaustiva.
 \paragraph{Soluzione:}
+Bisogna notare che, eseguendo la function \texttt{linsis(5,1)}, che ha in input due
+ argomenti, andiamo a creare matrici simmetriche. Perciò utilizzando i risultati come input
+della \textit{function} \texttt{mialdl}, otteniamo i seguenti risultati:
+\begin{enumerate}
+    \item Nel primo caso, ovvero calcolando \texttt{x1 = mialdl(A1,b1)}, il vettore risultante è: 
+    \begin{equation*} x_1=
+        \begin{pmatrix}
+            1\\
+            9.999999999999999e-01\\
+            9.999999999999999e-01\\
+            1.000000000000000e+00\\
+            1.000000000000000e+00
+        \end{pmatrix}
+    \end{equation*}
+    Il risultato è pressoché identico al risultato atteso. D'altra parte il numero di condizionamento \(K\) della matrice A1, dato dalla funzione \texttt{cond(A1)}
+    è pari a \(K = 2.5000e+00\). Questo numero ci fa capire che il problema è quindi ben condizionato, essendo piccolo.
+    \item Nel secondo caso invece, ovvero calcolando \texttt{x2 = mialdl(A2,b2)}, il vettore risultante è:
+    \begin{equation*} x_2=
+        \begin{pmatrix}
+            9.999996476574766e-01\\
+            1.000000446226050e+00\\
+            1.000000098875194e+00\\
+            1.000000207059384e+00\\
+            1.000000011600807e+00
+        \end{pmatrix}
+    \end{equation*}
+    Il cui numero di condizionamento della matrice A2, dato dalla funzione \texttt{cond(A2)} è pari a \(K = 9.999995645805687e+09\). Dato che il numero ottenuto è molto 
+    grande, ci fa capire che siamo di fronte ad un problema mal condizionato. \\
+    Questo è dovuto all'operazione con cui otteniamo la matrice A2, in particolare all'operazione: \texttt{ diag ([1e-10 2/n:1/n:1])}, in cui il primo elemento della matrice 
+    diagonale è molto vicino allo zero
+    \textbf{DA FINIRE!}
+\end{enumerate}
+
+
 \paragraph{Ercizio 13:}Utilizzare la \textit{function} \texttt{miaqr} per risolvere, nel senso dei minimi quadrati, i sistemi lineari sovradeterminati\\
 \texttt{Ax = b, \;\;\;\;\;\;(D*A)x = (D*b),\;\;\;\;\;\; (D1*A)x = (D1*b),}\\
 definiti dai seguenti dati:\\\\
