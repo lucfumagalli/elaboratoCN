@@ -652,7 +652,7 @@ della \textit{function} \texttt{mialdl}, otteniamo i seguenti risultati:
     \begin{equation*} x_1=
         \begin{pmatrix}
             1\\
-            9.999999999999999e-01\\
+            9.999999999999994e-01\\
             9.999999999999999e-01\\
             1.000000000000000e+00\\
             1.000000000000000e+00
@@ -663,18 +663,16 @@ della \textit{function} \texttt{mialdl}, otteniamo i seguenti risultati:
     \item Nel secondo caso invece, ovvero calcolando \texttt{x2 = mialdl(A2,b2)}, il vettore risultante è:
     \begin{equation*} x_2=
         \begin{pmatrix}
-            9.999996476574766e-01\\
-            1.000000446226050e+00\\
-            1.000000098875194e+00\\
-            1.000000207059384e+00\\
-            1.000000011600807e+00
+            1.000000052293492e+00\\
+            1.000000058138759e+00\\
+            1.000000008150719e+00\\
+            1.000000058625536e+00\\
+            1.000000040588329e+00
         \end{pmatrix}
     \end{equation*}
     Il cui numero di condizionamento della matrice A2, dato dalla funzione \texttt{cond(A2)} è pari a \(K = 9.999995645805687e+09\). Dato che il numero ottenuto è molto 
     grande, ci fa capire che siamo di fronte ad un problema mal condizionato. \\
-    Questo è dovuto all'operazione con cui otteniamo la matrice A2, in particolare all'operazione: \texttt{ diag ([1e-10 2/n:1/n:1])}, in cui il primo elemento della matrice 
-    diagonale è molto vicino allo zero
-    \textbf{DA FINIRE!}
+    \textbf{Bisogna spiegare il perché. DA FINIRE!}
 \end{enumerate}
 
 
@@ -683,11 +681,53 @@ della \textit{function} \texttt{mialdl}, otteniamo i seguenti risultati:
 definiti dai seguenti dati:\\\\
 \texttt{
 A = [ 1 3 2; 3 5 4; 5 7 6; 3 6 4; 1 4 2 ]; \\
-b=[15 28 4133 22]';\\
+b=[15 28 41 33 22]';\\
 D = diag(1:5);\\
 D1 = diag(pi*[1 1 1 1 1]).}\\\\
 Calcolare le corrispondenti soluzioni e residui, e commentare i risultati ottenuti.
 \paragraph{Soluzione:}
+Andando ad utilizzare la \textit{function} \texttt{miaqr} per risolvere il primo sistema lineare nel senso dei minimi quadrati, otteniamo che la soluzione \(x_1\) è:
+\begin{equation*} x_1=
+    \begin{pmatrix}
+        3.000000000000008e+00\\
+        5.800000000000001e+00\\
+        -2.500000000000008e+00
+    \end{pmatrix}
+\end{equation*}
+In cui la norma dei residui, ottenuta tramite la funzione norm di Matlab, è \(nr=1.2649e+00\). \\
+Se invece utilizziamo la \textit{function} \texttt{miaqr} per risolvere il secondo sistema lineare nel senso dei minimi quadrati, otteniamo che la soluzione \(x_2\) è:
+\begin{equation*} x_2=
+    \begin{pmatrix}
+        -6.025699862322442e-01\\
+        4.701698026617703e+00\\
+        1.758375401560388e+00
+    \end{pmatrix}
+\end{equation*}
+In cui la norma dei residui, ottenuta tramite la funzione norm di Matlab, è \(nr=3.7352e+00\). \\
+Infine, utilizzando la \textit{function} \texttt{miaqr} per risolvere l'ultimo sistema lineare nel senso dei minimi quadrati, otteniamo che la soluzione \(x_3\) è:
+\begin{equation*} x_3=
+    \begin{pmatrix}
+        3.000000000000016e+00\\
+        5.800000000000005e+00\\
+        -2.500000000000020e+00
+    \end{pmatrix}
+\end{equation*}
+In cui la norma dei residui, ottenuta tramite la funzione norm di Matlab, è \(nr=3.973835306318414e+00\). \\ \\
+Dal momento che, risolvere il sistema lineare \texttt{Ax=b}, è equivalente a risolvere il sistema lineare
+sovradeterminato \texttt{(D*A)x = (D*b)}, ci si aspetta che le soluzioni \(x_1\) e \(x_2\) coincidano.
+Ciò non avviene, perché la \textit{function} \texttt{miaqr} risolve il sistema lineare nel senso dei 
+minimi quadrati. Significa che la funzione trova il valore x per cui risulta che la norma del vettore residuo è minimizzata. \\
+Per verificare quanto detto, prendiamo in considerazione il vettore \(x_1\) e utilizziamolo come soluzione del sistema lineare sovradeterminato
+\texttt{(D*A)x = (D*b)}, calcolandone la norma. \\
+Il valore risultante è \(nr = 5.2764e+00\) che è molto distante dalla norma ottenuta considerando \(x_2\) nel sistema, ciò giustifica la discrepanza nei risultati. \\
+Nell'ultimo caso, invece, possiamo notare una lieve discrepanza tra i risultati \(x_1\) e \(x_3\). 
+Ripetendo il controllo del caso precedente, quindi, andando a calcolare la norma del sistema lineare sovradeterminato \texttt{(D1*A)x = (D1*b)} 
+ponendo \(x = x_1\) otteniamo che la norma residua è pari a: \(nr=3.973835306318418e+00\) che differisce per la cifra meno significativa dal risultato
+ottenuto ponendo \(x = x_3\). Questo spiegherebbe la lieve discrepanza tra i risultati in esame.
+
+
+
+
 \paragraph{Esercizio 14:}Scrivere una function Matlab,\\
 \texttt{[x,nit] = newton(fun,jacobian,x0,tol,maxit)}\\
 che implementi efficientemente il metodo di Newton per risolvere sistemi di equazioni nonlineari. 

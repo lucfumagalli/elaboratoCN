@@ -1,0 +1,10 @@
+A = [ 1 3 2; 3 5 4; 5 7 6; 3 6 4; 1 4 2 ]; 
+b = [15 28 41 33 22]';
+D = diag(1:5);
+D1 = diag(pi*[1 1 1 1 1]);
+x1 = miaqr(A,b);
+x2 = miaqr(D*A,D*b);
+x3 = miaqr(D1*A,D1*b);
+nr1 = norm(A*x1 - b);
+nr2 = norm((D*A)*x2 - (D*b));
+nr3 = norm((D1*A)*x3 - (D1*b));
