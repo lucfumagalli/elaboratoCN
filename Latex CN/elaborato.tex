@@ -181,6 +181,53 @@ Ottengo così i seguenti risultati:
 \begin{center}
     \includegraphics[height=10cm]{immagini/Screenshot 2023-01-31 alle 18.49.48.png}
 \end{center}
+\begin{center}
+    \begin{tabular}{||c | c | c | c | c||} 
+        \hline
+        & n & approssimato & esatto & errore\\
+        \hline
+        1 & 1.0000e-10 & 0.0215 & 0.0215 & 6.9389e-18\\
+        \hline
+        2 & 1.1288e-09 & 0.0323 & 0.0323 & 0\\
+        \hline
+        3 & 1.2743e-08 & 0.0483 & 0.0483 & 6.9389e-18\\
+        \hline
+        4 & 1.4384e-07 & 0.0724 & 0.0724 & 1.3878e-17\\
+        \hline
+        5 & 1.6238e-06 & 0.1084 & 0.1084 & 2.7756e-17\\
+        \hline
+        6 & 1.8330e-05 & 0.1624 & 0.1624 & 2.7756e-17\\
+        \hline
+        7 & 2.0691e-04 & 0.2432 & 0.2432 & 2.7756e-17\\
+        \hline
+        8 & 0.0023 & 0.3643 & 0.3643 & 0\\
+        \hline
+        9 & 0.0264 & 0.5456 & 0.5456 & 0\\
+        \hline
+        10 & 0.2976 & 0.8171 & 0.8171 & 0\\
+        \hline
+        11 & 3.3598 & 1.2238 & 1.2238 & 0\\
+        \hline
+        12 & 37.9269 & 1.8330 & 1.8330 & 2.2204e-16\\
+        \hline
+        13 & 428.1332 & 2.7453 & 2.7453 & 0\\
+        \hline
+        14 & 4.8329e+03 & 4.1118 & 4.1118 & 8.8818e-16\\
+        \hline
+        15 & 5.4556e+04 & 6.1585 & 6.1585 & 0\\
+        \hline
+        16 & 6.1585e+05 & 9.2239 & 9.2239 & 0\\
+        \hline
+        17 & 6.9519e+06 & 13.8150 & 13.8150 & 1.7764e-15\\
+        \hline
+        18 & 7.8476e+07 & 20.6914 & 20.6914 & 3.5527e-15\\
+        \hline
+        19 & 8.8587e+08 & 30.9905 & 30.9905 & 7.1054e-15\\
+        \hline
+        20 & 1.0000e+10 & 46.4159 & 46.4159 & 1.4211e-14\\
+        \hline
+    \end{tabular}
+\end{center}
 Come si può notare, avendo scelto una tolleranza dell'ordine di \texttt{1e-16}, tutti gli errori sono molto piccoli e contenuti, alcuni nulli.
 \pagebreak
 \paragraph{Esercizio 5:}
@@ -269,8 +316,25 @@ $$f(x)=x-cos(x)$$
 per \(tol = 10^{-3}, 10^{-6}, 10^{-9}, 10^{-12}\), partendo da \(x_0 = 0\) (e \(x_1 = 0.1\) per il metodo delle secanti). 
 Tabulare i risultati, in modo da confrontare il costo computazionale di ciascun metodo.
 \paragraph{Soluzione:}
+
 \begin{center}
     \includegraphics[width=\textwidth]{immagini/newton_secanti.png}
+\end{center}
+
+\begin{center}
+    \begin{tabular}{|| c || c | c || c | c||} 
+        \hline
+        tol & Radici Newton & iterazioni & Radici secanti & iterazioni\\
+        \hline
+        \(10^{-3}\) & 7.390851333852840e-01 & 4 & 7.390985629062998e-01 & 4\\
+        \hline
+        \(10^{-6}\) & 7.390851332151607e-01 & 5 & 7.390851332151466e-01 & 6\\
+        \hline
+        \(10^{-9}\) & 7.390851332151607e-01 & 5 & 7.390851332151607e-01 & 7\\
+        \hline
+        \(10^{-12}\) & 7.390851332151607e-01 & 6 & 7.390851332151607e-01 & 7\\
+        \hline
+    \end{tabular}
 \end{center}
 Il costo computazionale per ciascuna iterazione del metodo di Newton è pari a 2 valutazioni funzionali mentre per il metodo delle secanti è pari a 1.
 
@@ -282,6 +346,21 @@ Tabulare i risultati, in modo da confrontare il costo computazionale e l’accur
 \paragraph{Soluzione:}
 \begin{center}
     \includegraphics[width=\textwidth]{immagini/esercizio7.png}
+\end{center}
+\begin{center}
+    \begin{tabular}{|| c || c | c || c | c||} 
+        \hline
+        tol & Radici Newton & iterazioni & Radici secanti & iterazioni\\
+        \hline
+        \(10^{-3}\) & 0.732640697751109 & 20 & 0.730145017727562 & 26\\
+        \hline
+        \(10^{-6}\) & 0.739078762321033 & 51 & 0.739075266476228 & 70\\
+        \hline
+        \(10^{-9}\) & 0.739085126905744 & 82 & 0.739085038011533 & -1\\
+        \hline
+        \(10^{-12}\) & 0.7390851331015 & -1 & 0.739085038011533 & -1\\
+        \hline
+    \end{tabular}
 \end{center}
 Come possiamo notare dai precedenti risultati, in entrambi i metodi, essendo la funzione una radice multipla, si eseguono molte più iterazioni rispetto alla funzione 
 dell'Esercizio 6, in alcuni casi neanche convergono.
@@ -310,8 +389,11 @@ function x = mialu(A,b)
 
 [m,n] = size(A);
 dimb = length(b);
-if m ~= n || m ~= dimb
-    error("Dimensioni della matrice A o del vettore b non corrette")
+if m ~= n 
+    error("La matrice dei coefficenti A deve essere quadrata")
+end
+if m ~= dimb
+    error("La matrice A ed il vettore b hanno dimensioni discordanti")
 end
 p = [1:n];
 for i =1:n-1
@@ -403,8 +485,11 @@ function x = mialdl(A,b)
 %
 [m,n] = size(A);
 dimb = length(b);
-if m ~= n || m ~= dimb
-    error("Dimensioni della matrice A o del vettore b non corrette")
+if m ~= n 
+    error("La matrice dei coefficenti A deve essere quadrata")
+end
+if m ~= dimb
+    error("La matrice A ed il vettore b hanno dimensioni discordanti")
 end
 if A(1,1) <= 0, error('la matrice non e'' sdp'); end
 A(2:n,1) = A(2:n,1)/A(1,1);
