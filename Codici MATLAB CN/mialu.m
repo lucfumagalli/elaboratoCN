@@ -11,8 +11,11 @@ function x = mialu(A,b)
 
 [m,n] = size(A);
 dimb = length(b);
-if m ~= n || m ~= dimb
-    error("Dimensioni della matrice A o del vettore b non corrette")
+if m ~= n 
+    error("La matrice dei coefficenti A deve essere quadrata")
+end
+if m ~= dimb
+    error("La matrice A ed il vettore b hanno dimensioni discordanti")
 end
 p = [1:n];
 for i =1:n-1

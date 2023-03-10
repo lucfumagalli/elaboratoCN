@@ -9,8 +9,11 @@ function x = mialdl(A,b)
 %
 [m,n] = size(A);
 dimb = length(b);
-if m ~= n || m ~= dimb
-    error("Dimensioni della matrice A o del vettore b non corrette")
+if m ~= n 
+    error("La matrice dei coefficenti A deve essere quadrata")
+end
+if m ~= dimb
+    error("La matrice A ed il vettore b hanno dimensioni discordanti")
 end
 if A(1,1) <= 0, error('la matrice non e'' sdp'); end
 A(2:n,1) = A(2:n,1)/A(1,1);

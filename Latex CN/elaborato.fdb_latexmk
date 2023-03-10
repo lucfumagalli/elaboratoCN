@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1678212949 "e:/CN/elaboratoCN/Latex CN/elaborato.tex" "elaborato.pdf" "elaborato" 1678212951 0
+["pdflatex"] 1678472054 "e:/CN/elaboratoCN/Latex CN/elaborato.tex" "elaborato.pdf" "elaborato" 1678472056 0
   "c:/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1677090285 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy6.tfm" 1677087327 1124 14ccf5552bc7f77ca02a8a402bea8bfb ""
   "c:/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy8.tfm" 1677087327 1120 200be8b775682cdf80acad4be5ef57e4 ""
@@ -86,12 +86,9 @@
   "c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1677096996 4662804 131178ccc9b2f4741a821427ce79dce1 ""
   "c:/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt" 1677097131 7879501 dd323a264d731d88f639b2d8634e169f ""
   "c:/texlive/2022/texmf.cnf" 1677096964 713 e69b156964470283e0530f5060668171 ""
-  "e:/CN/elaboratoCN/Latex CN/elaborato.tex" 1678212946 35390 c67b52c551058b913dbd6b9f24dd2f3b ""
-  "elaborato.aux" 1678212951 2629 34f502ce2339c37dd83f2e5deb223aad "pdflatex"
-  "elaborato.tex" 1678212946 35390 c67b52c551058b913dbd6b9f24dd2f3b ""
-  "immagini/Screenshot 2023-01-31 alle 18.49.48.png" 1678210068 133736 725b1c4f3410c32369cb275bd057d865 ""
-  "immagini/esercizio7.png" 1678210068 38166 f88d9336af52417d878a0353a3f8ca48 ""
-  "immagini/newton_secanti.png" 1678210068 45075 c900e5361ce8668daa10cea36cd76b67 ""
+  "e:/CN/elaboratoCN/Latex CN/elaborato.tex" 1678472051 35086 4bf4a358fa8b4f50576ce8fcb9a79670 ""
+  "elaborato.aux" 1678472056 2627 de7f6eb5da2b22dae14bd038c9348ea6 "pdflatex"
+  "elaborato.tex" 1678472051 35086 4bf4a358fa8b4f50576ce8fcb9a79670 ""
   (generated)
   "elaborato.aux"
   "elaborato.log"
