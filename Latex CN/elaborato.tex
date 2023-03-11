@@ -134,10 +134,14 @@ perciò avendo un numero notevolmente alto, la somma precedente è malcondiziona
 calcoli \(\sqrt[6]{x}\) utilizzando solo operazioni algebriche elementari, con la massima precisione possibile. Confrontare con il risultato fornito da 
 \(x^{(1/6)}\) per 20 valori di x, equispaziati logaritmicamente nell’intervallo \([1e-10,1e10]\), tabulando i risultati in modo che si possa verificare che si è ottenuta la massima precisione possibile.
 \paragraph{Soluzione:}
-Per calcolare la radice sesta di un numero x, preso in input, si utilizza il seguente metodo iterativo che converge velocemente verso la radice:
+E' possibile notare che la radice sesta di un numero k sia data dalla soluzione positiva dell'equazione \( x^6 = k \), che può essere riscritta come \( x^6 - n= 0 \).
+Ciò equivale a ricercare la radice della funzione nel semiasse positivo delle ascisse della funzione \(f(x)=x^6-k\), è possibile quindi usare il metodo di Newton per trovarla.
+Quindi il passo iterativo dell'algoritmo risulta essere:
+$$x_{n+1}=x_n - \frac{f(x_n)}{f'(x_n)} = x_n - \frac{x_n^6 - k}{6x_n^5} = x_n - \frac{1}{6}(x_n - \frac{k}{x_n^5})$$
+Da questo risultato si giunge nel formulare il seguente metodo iterativo che converge verso la radice di un numero x:
 \begin{enumerate}
-    \item Si stima un valore iniziale di partenza \(x_n\)
-    \item Dopodiché si pone \(x_{n+1}=x_n + \bigtriangleup x_n\;\; \text{in cui}\;\; \bigtriangleup x_n = (\frac{x}{x^{k-1}_n}-x_n)\frac{1}{k}\) e \(k\) indica l'indice k-esimo della radice
+    \item Si stima un valore iniziale di partenza \(x_0\)
+    \item Dopodiché si pone \(x_{n+1}=x_n + \bigtriangleup x_n\;\; \text{in cui}\;\; \bigtriangleup x_n = (\frac{x}{x^{5}_n}-x_n)\frac{1}{6} \quad \forall n=0,1,2,...\)
     \item Reiteriamo il passo precedente finchè non risulta che la differenza \(|x_{n+1}-x_n|\)  sia minore di una precisione scelta
 \end{enumerate}
 Traducendo il precedente algoritmo in Matlab, otteniamo il seguente codice:

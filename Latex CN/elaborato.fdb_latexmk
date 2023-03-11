@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1678472054 "e:/CN/elaboratoCN/Latex CN/elaborato.tex" "elaborato.pdf" "elaborato" 1678472056 0
+["pdflatex"] 1678478825 "e:/CN/elaboratoCN/Latex CN/elaborato.tex" "elaborato.pdf" "elaborato" 1678478827 0
   "c:/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1677090285 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy6.tfm" 1677087327 1124 14ccf5552bc7f77ca02a8a402bea8bfb ""
   "c:/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy8.tfm" 1677087327 1120 200be8b775682cdf80acad4be5ef57e4 ""
@@ -45,7 +45,6 @@
   "c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb" 1677087327 32734 69e00a6b65cedb993666e42eedb3d48f ""
   "c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1677087327 32726 39f0f9e62e84beb801509898a605dbd5 ""
   "c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1677087327 32569 5e5ddc8df908dea60932f3c484a54c0d ""
-  "c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb" 1677087327 32587 65067f817f408bc71a7312f3d9828a9b ""
   "c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1677087327 32626 5abc8bb2f28aa647d4c70f8ea38cc0d3 ""
   "c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb" 1677087327 36118 fad905eba93cff5bce1e185fe980a177 ""
   "c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb" 1677087327 31099 342ef5a582aacbd3346f3cf4579679fa ""
@@ -86,9 +85,9 @@
   "c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1677096996 4662804 131178ccc9b2f4741a821427ce79dce1 ""
   "c:/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt" 1677097131 7879501 dd323a264d731d88f639b2d8634e169f ""
   "c:/texlive/2022/texmf.cnf" 1677096964 713 e69b156964470283e0530f5060668171 ""
-  "e:/CN/elaboratoCN/Latex CN/elaborato.tex" 1678472051 35086 4bf4a358fa8b4f50576ce8fcb9a79670 ""
-  "elaborato.aux" 1678472056 2627 de7f6eb5da2b22dae14bd038c9348ea6 "pdflatex"
-  "elaborato.tex" 1678472051 35086 4bf4a358fa8b4f50576ce8fcb9a79670 ""
+  "e:/CN/elaboratoCN/Latex CN/elaborato.tex" 1678478824 35562 fefd2af035461d36f7823a29ae4c2d2f ""
+  "elaborato.aux" 1678478826 2627 de7f6eb5da2b22dae14bd038c9348ea6 "pdflatex"
+  "elaborato.tex" 1678478824 35562 fefd2af035461d36f7823a29ae4c2d2f ""
   (generated)
   "elaborato.aux"
   "elaborato.log"
