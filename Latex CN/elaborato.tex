@@ -792,17 +792,21 @@ Infine, utilizzando la \textit{function} \texttt{miaqr} per risolvere l'ultimo s
     \end{pmatrix}
 \end{equation*}
 In cui la norma dei residui, ottenuta tramite la funzione norm di Matlab, è \(nr=3.973835306318414e+00\). \\ \\
-Dal momento che, risolvere il sistema lineare \texttt{Ax=b}, è equivalente a risolvere il sistema lineare
-sovradeterminato \texttt{(D*A)x = (D*b)}, ci si aspetta che le soluzioni \(x_1\) e \(x_2\) coincidano.
-Ciò non avviene, perché la \textit{function} \texttt{miaqr} risolve il sistema lineare nel senso dei 
-minimi quadrati. Significa che la funzione trova il valore x per cui risulta che la norma del vettore residuo è minimizzata. \\
-Per verificare quanto detto, prendiamo in considerazione il vettore \(x_1\) e utilizziamolo come soluzione del sistema lineare sovradeterminato
-\texttt{(D*A)x = (D*b)}, calcolandone la norma. \\
-Il valore risultante è \(nr = 5.2764e+00\) che è molto distante dalla norma ottenuta considerando \(x_2\) nel sistema, ciò giustifica la discrepanza nei risultati. \\
-Nell'ultimo caso, invece, possiamo notare una lieve discrepanza tra i risultati \(x_1\) e \(x_3\). 
-Ripetendo il controllo del caso precedente, quindi, andando a calcolare la norma del sistema lineare sovradeterminato \texttt{(D1*A)x = (D1*b)} 
-ponendo \(x = x_1\) otteniamo che la norma residua è pari a: \(nr=3.973835306318418e+00\) che differisce per la cifra meno significativa dal risultato
-ottenuto ponendo \(x = x_3\). Questo spiegherebbe la lieve discrepanza tra i risultati in esame.
+Ricordando che risolvere il sistema nel senso dei minimi quadrati consiste in un problema di ottimizzazione nella forma:
+$$\min_{x \in \mathbb{R}^n}\Arrowvert Ax-b \Arrowvert_{2}^2$$
+La norma dei residui infatti non è altro che il valore all'ottimo, che nel questo caso è dato da \(nr=1.2649e+00\). Si può infatti notare che, nonostante che risolvere il sistema lineare \texttt{Ax=b}
+ è equivalente a risolvere il sistema lineare sovradeterminato \texttt{(D*A)x = (D*b)}, ciò non è del tutto vero. Infatti il problema di minimo in questo caso risulterà essere:
+ $$\min_{x \in \mathbb{R}^n}\Arrowvert (D*A)x-(D*b) \Arrowvert_{2}^2 = \Arrowvert D*(Ax-b) \Arrowvert_{2}^2$$
+ Non è detto infatti che la soluzione \(x_1\) risolva questo nuovo problema, anzi, provando a sostituire ad x \(x_1\) otteniamo come risultato
+ \(nr = 5.2764e+00\) che risulta essere una soluzione ben peggiore rispetto a quella data da \(x_2\). \\
+ Possiamo notare che la quantità \(Ax-b\) risulta essere un vettore, per cui usando le proprietà delle norme:
+ $$\Arrowvert D*(Ax-b) \Arrowvert_{2}^2 \le \Arrowvert D \Arrowvert_{2}^2 * \Arrowvert Ax-b \Arrowvert_{2}^2 $$
+ Quindi il valore dell'obbiettivo del problema di minimo generato dal sistema \texttt{(D*A)x = (D*b)} risulta essere al massimo 
+ Nel caso invece di D1, possiamo notare che la matrice altro non è che il risultato del prodotto \(\pi*I\).
+Il problema in questo caso risulterà essere:
+$$\min_{x \in \mathbb{R}^n}\Arrowvert (\pi*A)x-(\pi*b) \Arrowvert_{2}^2 = \Arrowvert \pi*(Ax-b) \Arrowvert_{2}^2 =\pi * \Arrowvert Ax-b \Arrowvert_{2}^2  $$
+Infatti le due soluzioni ad eccezzione di qualche decimale coincidono, infatti la norma residua calcolata
+ponendo \(x = x_1\) è pari a: \(nr=3.973835306318418e+00\), le cifre inesatte sono dovute all'approssimazione necessaria di \(\pi\), non essendo possible rappresentare il numero interamente in codice macchina.
 
 
 
