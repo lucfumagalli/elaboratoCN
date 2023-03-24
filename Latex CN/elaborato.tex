@@ -765,48 +765,72 @@ D = diag(1:5);\\
 D1 = diag(pi*[1 1 1 1 1]).}\\\\
 Calcolare le corrispondenti soluzioni e residui, e commentare i risultati ottenuti.
 \paragraph{Soluzione:}
-Andando ad utilizzare la \textit{function} \texttt{miaqr} per risolvere il primo sistema lineare nel senso dei minimi quadrati, otteniamo che la soluzione \(x_1\) è:
+Ricordando che risolvere il sistema nel senso dei minimi quadrati consiste in un problema di ottimizzazione nella forma:
+$$\min_{x \in \mathbb{R}^n}\Arrowvert Ax-b \Arrowvert_{2}^2$$
+dove per residuo si intente un vettore  \(r=Ax-b\), si nota che la norma euclidea al quadrato dei residui non è altro che il valore all'ottimo. 
+Applicando quindi la \textit{function} \texttt{miaqr} ai vari sistemi, si ottengono quindi le seguenti soluzioni, residui e norme euclidee al quadrato:
 \begin{equation*} x_1=
     \begin{pmatrix}
         3.000000000000008e+00\\
         5.800000000000001e+00\\
         -2.500000000000008e+00
     \end{pmatrix}
+    ;  r_1=
+    \begin{pmatrix}
+        0.399999999999993\\
+        -3.5527136788005e-15\\
+        -0.399999999999999\\
+        0.799999999999997\\
+        -0.800000000000004
+    \end{pmatrix}
+    ;  \Arrowvert r_1 \Arrowvert_{2}^2 = 1.6
 \end{equation*}
-In cui la norma dei residui, ottenuta tramite la funzione norm di Matlab, è \(nr=1.2649e+00\). \\
-Se invece utilizziamo la \textit{function} \texttt{miaqr} per risolvere il secondo sistema lineare nel senso dei minimi quadrati, otteniamo che la soluzione \(x_2\) è:
 \begin{equation*} x_2=
     \begin{pmatrix}
         -6.025699862322442e-01\\
         4.701698026617703e+00\\
         1.758375401560388e+00
     \end{pmatrix}
+    ;  r_2=
+    \begin{pmatrix}
+        2.01927489674164\\
+        1.46856356126666\\
+        -1.65213400642492\\
+        1.74391922900415\\
+        -1.3951353832033
+    \end{pmatrix}
+    ;  \Arrowvert r_2 \Arrowvert_{2}^2 = 13.9513538320331 
 \end{equation*}
-In cui la norma dei residui, ottenuta tramite la funzione norm di Matlab, è \(nr=3.7352e+00\). \\
-Infine, utilizzando la \textit{function} \texttt{miaqr} per risolvere l'ultimo sistema lineare nel senso dei minimi quadrati, otteniamo che la soluzione \(x_3\) è:
 \begin{equation*} x_3=
     \begin{pmatrix}
-        3.000000000000016e+00\\
-        5.800000000000005e+00\\
-        -2.500000000000020e+00
+        3.00000000000001\\
+        5.80000000000001\\
+        -2.50000000000003
     \end{pmatrix}
+    ;  r_3=
+    \begin{pmatrix}
+        1.25663706143589\\
+        -5.6843418860808e-14\\
+        -1.25663706143598\\
+        2.51327412287179\\
+        -2.51327412287183
+    \end{pmatrix}
+    ;  \Arrowvert r_3 \Arrowvert_{2}^2 = 15.7913670417428
 \end{equation*}
-In cui la norma dei residui, ottenuta tramite la funzione norm di Matlab, è \(nr=3.973835306318414e+00\). \\ \\
-Ricordando che risolvere il sistema nel senso dei minimi quadrati consiste in un problema di ottimizzazione nella forma:
-$$\min_{x \in \mathbb{R}^n}\Arrowvert Ax-b \Arrowvert_{2}^2$$
-La norma dei residui infatti non è altro che il valore all'ottimo, che nel questo caso è dato da \(nr=1.2649e+00\). Si può infatti notare che, nonostante che risolvere il sistema lineare \texttt{Ax=b}
- è equivalente a risolvere il sistema lineare sovradeterminato \texttt{(D*A)x = (D*b)}, ciò non è del tutto vero. Infatti il problema di minimo in questo caso risulterà essere:
+
+ Dai risultati ottenuti è possibile notare una grande discrepanza tra quelli ottenuti con il primo e il secondo sistema, nonostante che risolvere il sistema lineare \texttt{Ax=b}
+ sia equivalente a risolvere il sistema lineare sovradeterminato \texttt{(D*A)x = (D*b)}. Tuttavia possiamo notare che nel caso dei minimi quadrati ciò non è sempre vero. Infatti il problema di minimo nel secondo caso risulta essere:
  $$\min_{x \in \mathbb{R}^n}\Arrowvert (D*A)x-(D*b) \Arrowvert_{2}^2 = \Arrowvert D*(Ax-b) \Arrowvert_{2}^2$$
  Non è detto infatti che la soluzione \(x_1\) risolva questo nuovo problema, anzi, provando a sostituire ad x \(x_1\) otteniamo come risultato
- \(nr = 5.2764e+00\) che risulta essere una soluzione ben peggiore rispetto a quella data da \(x_2\). \\
+ che la funzione obbiettivo ha come valore \(27.8400000000001\) che risulta essere una soluzione ben peggiore rispetto a quella data da \(x_2\). \\
  Possiamo notare che la quantità \(Ax-b\) risulta essere un vettore, per cui usando le proprietà delle norme:
  $$\Arrowvert D*(Ax-b) \Arrowvert_{2}^2 \le \Arrowvert D \Arrowvert_{2}^2 * \Arrowvert Ax-b \Arrowvert_{2}^2 $$
  Quindi il valore dell'obbiettivo del problema di minimo generato dal sistema \texttt{(D*A)x = (D*b)} risulta essere al massimo 
- Nel caso invece di D1, possiamo notare che la matrice altro non è che il risultato del prodotto \(\pi*I\).
+ Nel caso invece del terzo sistema, possiamo notare che la matrice altro non è che il risultato del prodotto \(\pi*I\).
 Il problema in questo caso risulterà essere:
-$$\min_{x \in \mathbb{R}^n}\Arrowvert (\pi*A)x-(\pi*b) \Arrowvert_{2}^2 = \Arrowvert \pi*(Ax-b) \Arrowvert_{2}^2 =\pi * \Arrowvert Ax-b \Arrowvert_{2}^2 $$
-Infatti le due soluzioni ad eccezzione di qualche decimale coincidono, infatti la norma residua calcolata
-ponendo \(x = x_1\) è pari a: \(nr=3.973835306318418e+00\), le cifre inesatte sono dovute all'approssimazione necessaria di \(\pi\), non essendo possible rappresentare il numero interamente in codice macchina.
+$$\min_{x \in \mathbb{R}^n}\Arrowvert (\pi*A)x-(\pi*b) \Arrowvert_{2}^2 = \Arrowvert \pi*(Ax-b) \Arrowvert_{2}^2 =\pi^2 * \Arrowvert Ax-b \Arrowvert_{2}^2 $$
+E' possibile notare che tale problema equivale a quello del primo sistema moltiplicato per uno scalare, per cui la soluzione di questo problema di minimo coincide con la soluzione di quella del primo sistema. Infatti le due soluzioni ad eccezzione di qualche decimale coincidono, come si può inoltre notare dalla norma residua calcolata
+ponendo \(x = x_1\) che risulta essere: \(15.7913670417428\), le cifre inesatte sono dovute da piccole imprecisioni delle operazioni in artimetica finita, specialmente considerando l'approssimazione necessaria di \(\pi\), non essendo possible rappresentare il numero interamente in codice macchina.
 
 
 
