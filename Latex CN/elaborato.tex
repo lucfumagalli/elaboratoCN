@@ -717,15 +717,46 @@ Perciò utilizzando i risultati come input della \textit{function} \texttt{mialu
     Il cui numero di condizionamento della matrice A2, dato dalla funzione \texttt{cond(A2)} è pari a \(K = 9.999995892902628e+09\). Dato che il numero ottenuto è molto 
     grande, ci fa capire che siamo di fronte ad un problema mal condizionato. \\
     Questo è dovuto all'operazione con cui otteniamo la matrice A2, in particolare all'operazione: \texttt{ diag ([1e-10 2/n:1/n:1])}, in cui il primo elemento della matrice 
-    diagonale è molto vicino allo zero
+    diagonale è molto vicino allo zero:
+    \begin{equation*} D=
+        \begin{pmatrix}
+            1e-10 & 0 & 0 & 0 & 0 \\
+            0 & 0.4 & 0 & 0 & 0 \\
+            0 & 0 & 0.6 & 0 & 0 \\
+            0 & 0 & 0 & 0.8 & 0 \\
+            0 & 0 & 0 & 0 & 1
+        \end{pmatrix}\;\;\;\;\;
+    \end{equation*}
+    Il motivo per cui tale valore rende il problema mal condizionato deriva dalla costruzione della matrice A2 mediante \(A=Q_1 * D * Q_2\), infatti per calcolare la matrice inversa Basterà ricordare che \(Q_1\) e \(Q_2\) sono matrici ortogonali, ottendendo:
+    \(A^{-1}=Q_2^{-1} * D^{-1} * Q_1^{-1} = Q_2^{T} * D^{-1} * Q_1^{T}\).\\
+    Inoltre si può notare che la matrice inversa di una matrice diagonale è una matrice diagonale dove gli elementi diagonali sono il reciproco rispetto alla matrice di partenza:
+    \begin{equation*} D^{-1}=
+        \begin{pmatrix}
+            1e10 & 0 & 0 & 0 & 0 \\
+            0 & 2.5 & 0 & 0 & 0 \\
+            0 & 0 & 1.667 & 0 & 0 \\
+            0 & 0 & 0 & 1.25 & 0 \\
+            0 & 0 & 0 & 0 & 1
+        \end{pmatrix}\;\;\;\;\;
+    \end{equation*}
+    Calcolando quindi la matrice inversa con la formula sopra illustrata si ottiene che 
+    moltiplicando \(Q1^{T}\) per \(D\) si va' a realizzare una matrice dove la prima colonna avrà elementi nell'ordine di \(1e9\), 
+    tale matrice moltiplicata per \(Q_2^{T}\) infine produce una matrice dove tutti gli elementi 
+    raggiungono valori altissimi, come si può notare dalla norma della matrice inversa:
+    \begin{equation*}
+    \Arrowvert A1 \Arrowvert_{2}=1 \qquad
+    \Arrowvert A2 \Arrowvert_{2}=1 \qquad
+    \Arrowvert A1^{-1} \Arrowvert_{2}=2.5 \qquad
+    \Arrowvert A2^{-1} \Arrowvert_{2}=1.0000e+10
+    \end{equation*}
+    In generale si ha che \(\rho(A)\ \le \Arrowvert A \Arrowvert\)
+    Da questi risultati si evince quindi che la costruzione di A2 risulta peggiore rispetto a quella di A1
     \textbf{DA FINIRE!}
 \end{enumerate}
 \paragraph{Esercizio 12:} Risolvere, utilizzando la \textit{function} \texttt{mialdlt}, i sistemi lineari generati da\\ \texttt{[A1,A2,b1,b2]=linsis(5,1)}. 
 Commentare l’accuratezza dei risultati ottenuti, dandone spiegazione esaustiva.
 \paragraph{Soluzione:}
-Bisogna notare che, eseguendo la function \texttt{linsis(5,1)}, che ha in input due
- argomenti, andiamo a creare matrici simmetriche. Perciò utilizzando i risultati come input
-della \textit{function} \texttt{mialdl}, otteniamo i seguenti risultati:
+Similmente al caso precedente usando la \textit{function} \texttt{mialdl}, otteniamo i seguenti risultati:
 \begin{enumerate}
     \item Nel primo caso, ovvero calcolando \texttt{x1 = mialdl(A1,b1)}, il vettore risultante è: 
     \begin{equation*} x_1=
@@ -751,7 +782,36 @@ della \textit{function} \texttt{mialdl}, otteniamo i seguenti risultati:
     \end{equation*}
     Il cui numero di condizionamento della matrice A2, dato dalla funzione \texttt{cond(A2)} è pari a \(K = 9.999995645805687e+09\). Dato che il numero ottenuto è molto 
     grande, ci fa capire che siamo di fronte ad un problema mal condizionato. \\
-    \textbf{Bisogna spiegare il perché. DA FINIRE!}
+    Tuttavia a differenza del caso precedente le matrici A1 e A2 vengono costruite mediante la formula : \(Q_1 * D * Q_1^{T}\), che ha particolarità di essere simmetrica,
+    infatti la transposta è data data da: \((Q_1 * D * Q_1^{T})^{T}=Q_1*D^{T}*Q_1^{T}=Q_1 * D * Q_1^{T}\). 
+    Per la precisione le matrici A1 e A2 sono entrambe simmetriche semidefinite positive, infatti:
+    \(\forall x \in R^{n}, xQ_1 * D * Q_1^{T}x^{T} = (xQ_1) * D * (xQ_1)^{T}\), sostituendo \(xQ_1=y \in R^{n}\) con \(y \ne 0\) 
+    (perché la matrice \(Q_1\) è non singolare (?)), avremo che \(y*D*y^{T}>0\) perchè gli elementi della matrice diagonale sono tutti positivi, e quindi la matrice è sdp.
+    Questa costruzione ha anche un'altra particolarità, ovvero le matrici A1 e A2 sono simili alla matrice D. Infatti per definizione,
+    la matrice A e B sono simili se esiste una matrice M invertibile tale che: \(A=P^{-1}*B*P\). Considerando \(P=Q_1^{T}\) e \(B=D\) 
+    allora si ha che: \(A=(Q_1^{T})^{-1}*D*Q_1^{T} = (Q_1^{-1})^{T}*D*Q_1^{T} = (Q_1^{T})^{T}*D*Q_1^{T} = Q_1*D*Q_1^{T}\). 
+    Quindi ciò comporta che le matrici A1 e A2 hanno gli stessi autovalori, e quindi lo stesso raggio spettrale della matrice diagonale.
+    Anche la matrice inversa di A1 e A2 risulta essere simile, come si può notare anche da \(A^{-1}=(Q_1^{T})*D^{-1}*Q_1\).
+    Quindi in generale avremo che: 
+    \begin{equation*}
+        \begin{aligned}
+            & \Arrowvert A_1 \Arrowvert \ge \rho(D_1) = 1  \\
+            & \Arrowvert A_1^{-1} \Arrowvert \ge \rho(D_1^{-1}) = 2.5 \\
+            & \Arrowvert A_2 \Arrowvert \ge \rho(D_2) = 1  \\
+            & \Arrowvert A_2^{-1} \Arrowvert \ge \rho(D_2^{-1}) = 1e10  \\
+        \end{aligned}
+    \end{equation*}
+    Per cui data una norma qualsiasi, abbiamo che il numero di condizionamento della prima matrice sarà 
+    \(\Arrowvert A_1 \Arrowvert * \Arrowvert A_1^{-1} \Arrowvert \ge 2.5\), mentre per la seconda 
+    \(\Arrowvert A_2 \Arrowvert * \Arrowvert A_2^{-1} \Arrowvert \ge 1e10\). 
+    Ciò tuttavia è vero solo in condizioni ottimali, infatti entrambe le matrici 
+    sono soggette ad errori di round-off dovuti alla loro costruzione.
+    Ciò si può notare anche solo usando il comando \texttt{isSymmetric()}
+    che per entrambe le matrici risulta essere falso, come si può anche notare come il 
+    numero di condizionamento della seconda matrice calcolato 
+    tramite Matlab va in contraddizione con quanto stabilito.
+    Quindi il mal condizionamento del secondo sistema rispetto al primo, causa errori di imprecisione maggiori.
+
 \end{enumerate}
 
 
