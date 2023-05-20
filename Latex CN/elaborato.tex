@@ -4,6 +4,7 @@
 \usepackage{amsfonts}
 \usepackage{geometry}
 \usepackage{fancyhdr}
+\usepackage{adjustbox}
 \geometry{a4paper, top=2cm, bottom=2cm, left=1cm, right=1.5cm,  heightrounded, bindingoffset=5mm}
 \pagestyle{fancy}
 \fancyfoot[RO]{}
@@ -935,4 +936,398 @@ il sistema nonlineare derivante dalla determinazione del punto stazionario della
 \end{equation*}
 utilizzando tolleranze \texttt{tol = 1e-3, 1e-8, 1e-13}. Graficare la soluzione e tabulare in modo con- veniente i risultati ottenuti.
 \paragraph{Soluzione:}
+
+
+
+\paragraph{Esercizio 16:}
+Costruire una function, \texttt{lagrange.m}, avente la stessa sintassi della function \texttt{spline}
+di Matlab, che implementi, in modo vettoriale, la forma di Lagrange del polinomio interpolante una
+funzione.
+
+\paragraph{Soluzione:}
+
+\texttt{CODICE Matlab per funzione lagrange}
+\begin{lstlisting}[frame=single]
+function p = lagrange(x, y, xq)
+%
+%   p=lagrange(x, y, xq)
+%
+%   Calcolo del polinomio interpolante in base di Lagrange:
+%
+%   Input:
+%   x: ascisse di interpolazione
+%   y: valori della funzione interpolanda nelle ascisse di interpolazione
+%   xq: valori su cui calcolare il valore del polinomio interpolante
+%
+%   Output:
+%   p: vettore con i valori calcolati
+%
+n=length(x);
+p=zeros(size(xq));
+for i=1:n
+    p=p+y(i)*Lin(i,x,xq);
+end
+return
+end
+\end{lstlisting}
+
+\texttt{CODICE Matlab per funzione Lin}
+
+\begin{lstlisting}[frame=single]
+function L = Lin(i, xi, x)
+%
+%   L=Lin(i,xi,x)
+%
+%   Calcolo della base di Lagrange
+%
+%   Input:
+%   i: indice
+%   xi: ascisse di interpolazione
+%   x: valori su cui calcolare la base di Lagrange
+%
+%   Output:
+%   L: vettore con i valori della base di Lagrange con indice i
+%
+L=ones(size(x));
+zi=xi(i);
+xi(i)=[];
+n=length(xi);
+for j=1:n
+    L=L.*(x-xi(j));
+end
+L=L/prod(zi-xi);
+return
+end
+\end{lstlisting}
+
+
+\paragraph{Esercizio 17:}
+Costruire una function, \texttt{newton.m}, avente la stessa sintassi della function \texttt{spline}
+di Matlab, che implementi, in modo vettoriale, la forma di Newton del polinomio interpolante una
+funzione.
+
+\paragraph{Soluzione:}
+
+\texttt{CODICE Matlab per funzione newton}
+\begin{lstlisting}[frame=single]
+function p = newton(x, y, xq)
+%
+%   p=newton(x, y, xq)
+%
+%   Calcolo del polinomio interpolante in base di Newton:
+%
+%   Input:
+%   x: ascisse di interpolazione
+%   y: valori della funzione interpolanda nelle ascisse di interpolazione
+%   xq: valori su cui calcolare il valore del polinomio interpolante
+%
+%   Output:
+%   p: vettore con i valori calcolati
+%
+n = length(x)-1;
+for j=1:n
+    for i=n+1:-1:j+1
+        y(i)=(y(i)-y(i-1))/(x(i)-x(i-j));
+    end
+end
+p=horner(x,y,xq);
+return
+end
+\end{lstlisting}
+
+\texttt{CODICE Matlab per l'algoritmo di horner}
+\begin{lstlisting}[frame=single]
+function p = horner(x, f, xq)
+%
+%   p=horner(x, f, ,xq)
+%
+%   Algoritmo di horner generalizzato per il calcolo di un polinomio:
+%
+%   Input:
+%   x: ascisse di interpolazione
+%   f: valori delle differenze divise
+%   xq: valori su cui calcolare il polinomio
+%
+%   Output:
+%   p: vettore con i valori calcolati
+%
+n=length(x)-1;
+p=ones(size(xq))*f(n+1);
+for i=n:-1:1
+    p=p.*(xq-x(i))+f(i);
+end
+return
+end
+\end{lstlisting}
+\paragraph{Esercizio 18:}
+Costruire una function, \texttt{hermite.m}, avente sintassi
+\begin{center}
+    \texttt{yy = hermite( xi, fi, f1i, xx )}
+\end{center}
+che implementi, in modo vettoriale, il polinomio interpolante di Hermite.
+\paragraph{Soluzione:}
+
+\texttt{CODICE Matlab per hermite}
+\begin{lstlisting}[frame=single]
+function yy = hermite(xi, fi, f1i, xx)
+%
+%   p=hermite(xi, fi, ,f1i, xx)
+%
+%   Calcolo del polinomio interpolante di Hermite:
+%
+%   Input:
+%   xi: ascisse di interpolazione
+%   fi: valori della funzione interpolanda nelle ascisse di interpolazione
+%   f1i: valori della derivata prima della funzione interpolanda nelle
+%   ascisse di interpolazione
+%   xx: valori su cui calcolare il valore del polinomio interpolante
+%
+%   Output:
+%   yy: vettore con i valori calcolati
+%
+n=length(xi)-1;
+xi=repelem(xi,2);
+fi=repelem(fi,2);
+fi(2:2:end)=f1i;
+for i = (2*n+1):-2:3
+    fi(i)=(fi(i)-fi(i-2))/(xi(i)-xi(i-1));
+end
+for j=2:2*n+1
+    for i = (2*n+2):-1:j+1
+        fi(i)= (fi(i)-fi(i-1))/(xi(i)-xi(i-j));
+    end
+end
+yy=horner(xi,fi,xx);
+return
+end
+\end{lstlisting}
+\texttt{CODICE Matlab per l'algoritmo di horner}
+\begin{lstlisting}[frame=single]
+function p = horner(x, f, xq)
+%
+%   p=horner(x, f, ,xq)
+%
+%   Algoritmo di horner generalizzato per il calcolo di un polinomio:
+%
+%   Input:
+%   x: ascisse di interpolazione
+%   f: valori delle differenze divise
+%   xq: valori su cui calcolare il polinomio
+%
+%   Output:
+%   p: vettore con i valori calcolati
+%
+n=length(x)-1;
+p=ones(size(xq))*f(n+1);
+for i=n:-1:1
+    p=p.*(xq-x(i))+f(i);
+end
+return
+end
+\end{lstlisting}
+\paragraph{Esercizio 19:}
+Costruire una function Matlab che, specificato in ingresso il grado \emph{n} del polinomio
+interpolante, e gli estremi dell'intervallo [\emph{a}, \emph{b}], calcoli le corrispondenti ascisse di Chebyshev.
+
+\paragraph{Soluzione:}
+\begin{lstlisting}[frame=single]
+function x = cheby(n,a,b)
+%
+%   x=cheby(n,a,b)
+%
+%   Calcolo delle ascisse di Chebyshev:
+%
+%   Input:
+%   n: grado del polinomio
+%   a,b: estremi dell'intervallo
+%
+%   Output:
+%   x: vettore contentente le ascisse di Chebyshev
+if n<1 || n~=fix(n)
+    error('n deve essere un numero naturale');
+elseif a>=b
+    error('l''intervallo non e'' corretto');
+end
+x=(a+b)/2 + cos((2*(n:-1:0)+1)*pi./(2*(n+1))) * (b-a)/2;
+return
+end
+\end{lstlisting}
+\paragraph{Esercizio 20:}
+Costruire una function Matlab, con sintassi
+\begin{center}
+    \texttt{ll = lebesgue( a, b, nn, type )}
+\end{center}
+che approssimi la costante di Lebesgue per l'interpolazione polinomiale sull'intervallo \texttt{[a,b]}, per
+i polinomi di grado specificato nel vettore \texttt{nn}, utilizzando ascisse equidistanti, se \texttt{type=0}, o di
+Chebyshev, se \texttt{type=1} (utilizzare 10001 punti equispaziati nell'intervallo \texttt{[a,b]} per ottenere ciascuna componente di ll). 
+Graficare i risultati ottenuti, per \texttt{nn=1:100}, utilizzando \texttt{[a,b]=[0,1]} e \texttt{[a,b]=[-3,7]}. Giustificare i risultati ottenuti.
+
+\paragraph{Soluzione:}
+
+
+\paragraph{Esercizio 21:}
+Utilizzando le function dei precedenti esercizi, graficare (in semilogy) l'andamento
+errore di interpolazione (utilizzare 10001 punti equispaziati nell'intervallo per ottenerne la stima)
+per la funzione di Runge,
+
+\begin{equation}
+    f(x)=\frac{1}{1+x^{2}}, \hspace{1cm} x \in [-5,5]
+\end{equation}
+
+utilizzando sia le ascisse equidistanti che di Chebyshev, per i polinomi interpolanti di grado \texttt{nn=2:2:100}.
+Graficare l'errore di interpolazione anche per i polinomi interpolanti di Hermite di grado \texttt{nn=3:2:99},
+sia utilizzando ascisse equidistanti che ascisse di Chebyshev, nell'intervallo considerato.
+
+\paragraph{Soluzione:}
+
+
+\paragraph{Esercizio 22:}
+Costruire una function, \texttt{myspline.m}, avente sintassi
+\begin{center}
+\texttt{yy = myspline( xi, fi, xx, type )}
+\end{center}
+dove \texttt{type=0} calcola la \emph{spline} cubica interpolante naturale i punti \texttt{(xi,fi)}, e \texttt{type\textasciitilde=0} calcola quella calcola quella
+\emph{not-a-knot} (default).
+\paragraph{Soluzione:}
+
+
+\paragraph{Esercizio 23:}
+Graficare, utilizzando il formato semilogy, l'errore di approssimazione utilizzando le
+\emph{spline} interpolanti naturale e \emph{not-a-knot} per approssimare la funzione di Runge sull'intervallo [-5,5],
+utilizzando una partizione \(\Delta = \{-5=x_0 <...<x_n=5\}\), con ascisse equidistanti e \texttt{n=4:4:400}.
+Utilizzare 10001 punti equispaziati nell'intervallo \text{[-5, 5]} per ottenere la stima dell'errore.
+
+\paragraph{Soluzione:}
+
+
+\paragraph{Esercizio 24:}
+E' noto che un fenomeno fisico evolve come \(y = x^{n}\) con \emph{n} incognito. 
+Il file \texttt{data.mat} contiene 1000 coppie di dati \((x_{i},y_{i})\), in cui la seconda componente è affetta da un errore con distribuzione Gaussiana a media nulla e varianza “piccola”. Utilizzando un opportuno polinomio
+di approssimazione ai minimi quadrati, stimare il grado \emph{n}. Argomentare il procedimento seguito,
+graficando la norma del residuo rispetto a valori crescenti di \emph{n}. E richiesto il codice Matlab dell'algoritmo 
+che avrete implementato (potete utilizzare, se lo ritenete opportuno, la function \texttt{polyfit}
+di Matlab).
+\paragraph{Soluzione:}
+
+
+\paragraph{Esercizio 25:}
+Costruire una function Matlab che, dato in input \emph{n}, restituisca i pesi della quadratura della formula di Newton-Cotes di grado \emph{n}. Tabulare, quindi, i pesi delle formule di grado
+1, 2,. . . , 7 e 9 (come numeri razionali).
+
+
+\paragraph{Soluzione:}
+
+\texttt{codice per i pesi di Newton Codes}
+\begin{lstlisting}[frame=single]
+function c = pesiNewtCotes(n)
+%
+%   c=pesiNewtCotes
+%
+%   Calcolo dei pesi della formula di Newton Cotes:
+%
+%   Input:
+%   n: grado della formula
+%
+%   Output:
+%   c: vettore con i pesi
+%
+if n<1 || n~=fix(n)
+    error('n deve essere un numero naturale');
+else
+c=zeros(1,n);
+for i=0:n/2
+    den = prod( i - [0:i-1, i+1:n]);
+    coeff = poly([0:i-1 i+1:n]);
+    coeff = [coeff./((n+1):-1:1) 0];
+    num=polyval(coeff,n);
+    c(i+1)=num/den;
+end
+for i=n+1:-1:n/2
+    c(i) = c(n+2-i);
+end
+return
+end
+\end{lstlisting}
+
+
+\begin{center}
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{||c || c | c | c | c | c | c | c | c ||} 
+     \hline
+     
+     n & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7\\
+     \hline\hline
+     1 & 1/2 & 1/2 & & & & & & \\ 
+     \hline
+     2 & 1/3 & 4/3 & 1/3 & & & & & \\
+     \hline
+     3 & 3/8 & 9/8 & 9/8 & 3/8 & & & & \\
+     \hline
+     4 & 14/45 & 64/45 & 8/15 & 64/45 & 14/45 & & & \\
+     \hline
+     5 & 95/288 & 125/96 & 125/144 & 125/144 & 125/96 & 95/288 & & \\ 
+     \hline
+     6 & 41/140 & 54/35 & 27/140 & 68/35 & 27/140 & 54/35 & 41/140 & \\  
+     \hline
+     7 & 1073/3527 & 810/559 & 343/640 & 649/536 & 649/536 & 343/640 & 810/559 & 1073/3527\\  
+     \hline
+     9 & 130/453 & 1374/869 & 243/2240 & 5287/2721 & 704/1213 & 704/121 & 5287/2721 & 130/453\\
+     \hline
+\end{tabular}
+\end{adjustbox}
+\end{center}
+
+
+
+\paragraph{Esercizio 26:}
+Scrivere una function Matlab, \\
+
+\texttt{[If,err] = composita( fun, a, b, k, n )}
+
+che implementi la formula composita di Newton-Cotes di grado \texttt{k} su \texttt{n+1} ascisse equidistanti, con \texttt{n}
+multiplo pari di \texttt{k}, in cui:
+
+\begin{itemize}
+    \item \texttt{fun} è la funzione integranda (che accetta input vettoriali);
+    \item \texttt{[a,b]} è l’intervallo di integrazione;
+    \item \texttt{k}, \texttt{n} come su descritti;
+    \item \texttt{If} è l’approssimazione dell’integrale ottenuta;
+    \item \texttt{err} è la stima dell’errore di quadratura.
+\end{itemize}
+\paragraph{Soluzione:}
+
+
+\paragraph{Esercizio 27:}
+Utilizzare la function \texttt{composita} per ottenere l’approssimazione dell’integrale\\
+
+$$\int_{0}^{1}(\sum_{i=1}^{5}i\cos(2\pi{ix})-e^{i}\sin(2(\pi{i}+0.1)x))dx$$
+
+con le formule composite di Newton-Cotes di grado \texttt{k=1,2,3,4,5,6}. Per tutte, utilizzare \texttt{n=12}.
+
+\paragraph{Soluzione:}
+
+
+\paragraph{Esercizio 28:}
+Implementare la formula composita adattativa di Simpson.
+
+\paragraph{Soluzione:}
+
+
+\paragraph{Esercizio 29:}
+Implementare la formula composita adattativa di Newton-Cotes di grado \texttt{k=4}.
+
+\paragraph{Soluzione:}
+
+
+\paragraph{Esercizio 30:}
+Confrontare le formule adattative degli ultimi due esercizi, tabulando il numero
+di valutazioni funzionali effettuate, rispetto alla tolleranza \texttt{tol = 1e-2, 1e-3, ..., 1e-9}, per
+ottenere l’approssimazione dell’integrale \\
+
+$$\int_{10^{-5}}^{1}x^{-1}\cos(\log(x^{-1}))dx\equiv\sin(\log(10^{5}))$$
+
+Costruire un’altra tabella, in cui si tabula l’errore vero (essendo l’integrale noto, in questo caso)
+rispetto a \texttt{tol}.
+\paragraph{Soluzione:}
+
 \end{document}
