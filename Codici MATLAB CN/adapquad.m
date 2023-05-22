@@ -39,13 +39,13 @@ f5=feval(f,x5);
 f6=feval(f,x6);
 f7=feval(f,x7);
 I2=.5*h*(14*fa+64*f4+24*f1+64*f5+28*f2+64*f6+24*f3+64*f7+14*fb);
-fe=fe+5;
+fe=fe+4;
 e=abs(I2-I1)/63;
 if e>tol
     [left,fe1]=adapquad(a,x2,f,tol,fa,f4,f1,f5,f2);
     [right,fe2]=adapquad(x2,b,f,tol,f2,f6,f3,f7,fb);
     I2=left+right;
-    fe=fe1+fe2;
+    fe=fe+fe1+fe2;
 end
 return
 end
