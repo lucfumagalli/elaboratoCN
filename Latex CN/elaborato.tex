@@ -895,15 +895,67 @@ ponendo \(x = x_1\) che risulta essere: \(15.7913670417428\), le cifre inesatte 
 
 
 
-
+\newpage
 \paragraph{Esercizio 14:}Scrivere una function Matlab,\\
 \texttt{[x,nit] = newton(fun,jacobian,x0,tol,maxit)}\\
 che implementi efficientemente il metodo di Newton per risolvere sistemi di equazioni nonlineari. 
 Curare particolarmente il criterio di arresto, che deve essere analogo a quello usato nel caso scalare. 
 La seconda variabile, se specificata, ritorna il numero di iterazioni eseguite. Prevedere opportuni valori 
 di \textit{default} per gli ultimi due parametri di ingresso.
-\paragraph{Soluzione:}
+\paragraph{Soluzione:} Funzione che calcola  il metodo di Newton per risolvere sistemi di equazioni nonlineari
+\begin{lstlisting}[frame=single]
+function [x,nit] = newtonJ(fun,jacobian,x0,tol,maxit)
+%   [x,nit] = newtonJ(fun,jacobian,x0,tol,maxit)
+%   Funzione che implementa il metodo di Newton per sistemi 
+%   di equazioni nonlineari
+%   
+%   Input:
+%   fun: function funzione di un sistema nonlineare
+%   jacobian: matrice jacobiana di fun
+%   x0: approssimazione iniziale
+%   tol: tolleranza richiesta
+%   maxit: massimo numero di iterazioni richiesto
+%   Output:
+%   x: risultato del metodo di Newton
+%   nit: numero di iterazioni effettuate
+%
+if nargin < 3
+    error('numero argomenti insufficienti');
+elseif nargin==3
+    tol=1e-13;
+    maxit=10e3;
+elseif nargin==4
+    maxit=10e3;
+end
+if tol<0
+    error('la tolleranza non deve essere negativa');
+end
+if maxit<=0
+    error('maxit deve essere maggiore di 0');
+end
+x=x0;
+nit=-1;
+for i=1:maxit
+    fx = feval(fun,x);
+    f1x = feval(jacobian,x);
+    if f1x == 0, error('Derivata prima uguale a 0'); end
+    dx=f1x\(-fx);
+    x = x + dx';
+    if abs(x-x0)<=tol*(1+abs(x0))
+        nit=i;
+        break;
+    else
+        x0 = x;
+    end
+end
 
+if nit == -1, disp('Il metodo di Newton per il sistema lineare non converge');end
+end    
+\end{lstlisting}
+
+
+
+\newpage
 \paragraph{Esercizio 15:} Usare la function del precedente esercizio per risolvere, a partire dal vettore iniziale nullo, 
 il sistema nonlineare derivante dalla determinazione del punto stazionario della funzione:
 
@@ -970,7 +1022,7 @@ end
 return
 end
 \end{lstlisting}
-
+\newpage
 \texttt{CODICE Matlab per funzione Lin}
 
 \begin{lstlisting}[frame=single]
@@ -1034,7 +1086,7 @@ p=horner(x,y,xq);
 return
 end
 \end{lstlisting}
-
+\newpage
 \texttt{CODICE Matlab per l'algoritmo di horner}
 \begin{lstlisting}[frame=single]
 function p = horner(x, f, xq)
@@ -1129,7 +1181,7 @@ end
 Costruire una function Matlab che, specificato in ingresso il grado \emph{n} del polinomio
 interpolante, e gli estremi dell'intervallo [\emph{a}, \emph{b}], calcoli le corrispondenti ascisse di Chebyshev.
 
-\paragraph{Soluzione:}
+\paragraph{Soluzione:} Calcolo delle ascisse di Chebyshev 
 \begin{lstlisting}[frame=single]
 function x = cheby(n,a,b)
 %
@@ -1332,10 +1384,7 @@ multiplo pari di \texttt{k}, in cui:
     \item \texttt{If} è l’approssimazione dell’integrale ottenuta;
     \item \texttt{err} è la stima dell’errore di quadratura.
 \end{itemize}
-\paragraph{Soluzione:}
-
-
-
+\paragraph{Soluzione:} Calcolo della formula composita di Newton-Cotes di grado \texttt{k} su \texttt{n+1} ascisse equidistanti.
 \begin{lstlisting}[frame=single]
 function [If,err] = composita(fun, a, b, k, n)
 x=linspace(a,b,n+1);
@@ -1361,39 +1410,139 @@ err=abs(IfH-If)/(2^(k+u)-1);
 \end{lstlisting}
 
 
+
 \paragraph{Esercizio 27:}
 Utilizzare la function \texttt{composita} per ottenere l’approssimazione dell’integrale\\
-
 $$\int_{0}^{1}(\sum_{i=1}^{5}i\cos(2\pi{ix})-e^{i}\sin(2(\pi{i}+0.1)x))dx$$
-
 con le formule composite di Newton-Cotes di grado \texttt{k=1,2,3,4,5,6}. Per tutte, utilizzare \texttt{n=12}.
-
 \paragraph{Soluzione:}
 
-
+\newpage
 \paragraph{Esercizio 28:}
 Implementare la formula composita adattativa di Simpson.
+\paragraph{Soluzione:} Calcolo della formula adattiva di Simpson
+\begin{lstlisting}[frame=single]
+function [I2,vf] = adapsim(a,b,f,tol,fa,f1,fb)
+%
+%   [I2,vf] = adapsim(a,b,f,tol)
+% 
+%   Calcola la formula adattiva di Simpson
+%
+%   Input:
+%   a,b: estremi intervallo di integrazione
+%   f: function funzione integranda
+%   tol: tolleranza richiesta
+%   Output:
+%   I2: approssimazione ottenuta
+%   vf: valutazioni funzionali
+%
+if a==b
+    I2=0;
+    return
+elseif a>b
+    error('intervallo non corretto');
+elseif tol<0
+    error('tolleranza negativa');
+end
+x1=(a+b)/2;
+vf=0;
+if nargin==4
+    fa=feval(f,a);
+    fb=feval(f,b);
+    f1=feval(f,x1);
+    vf=3;
+end
+h=(b-a)/6;
+I1=h*(fa+4*f1+fb);
+x2=(a+x1)/2;
+x3=(x1+b)/2;
+f2=feval(f,x2);
+f3=feval(f,x3);
+I2=.5*h*(fa+4*f2+2*f1+4*f3+fb);
+vf=vf+2;
+e=abs(I2-I1)/15;
+if e>tol
+    [left,vf1]=adapsim(a,x1,f,tol/2,fa,f2,f1);
+    [right,vf2]=adapsim(x1,b,f,tol/2,f1,f3,fb);
+    I2=left+right;
+    vf=vf+vf1+vf2;
+end
+return
+end
+\end{lstlisting}
 
-\paragraph{Soluzione:}
-
-
+\newpage
 \paragraph{Esercizio 29:}
 Implementare la formula composita adattativa di Newton-Cotes di grado \texttt{k=4}.
+\paragraph{Soluzione:} Calcolo della formula adattiva di Newton-Cotes di grado k=4.
+\begin{lstlisting}[frame=single]
+function [I2,vf] = adapquad(a,b,f,tol,fa,f1,f2,f3,fb)
+%
+%   [I2,vf] = adapquad(a,b,f,tol)
+% 
+%   Calcola la formula adattiva di Simpson
+%
+%   Input:
+%   a,b: estremi intervallo di integrazione
+%   f: function funzione integranda
+%   tol: tolleranza richiesta
+%   Output:
+%   I2: approssimazione ottenuta
+%   vf: valutazioni funzionali
+%
+if a==b
+    I2=0;
+    return
+elseif a>b
+    error('intervallo non corretto');
+elseif tol<0
+    error('tolleranza negativa');
+end
+vf=0;
+x2=(a+b)/2;
+x1=(a+x2)/2;
+x3=(x2+b)/2;
+if nargin==4
+    fa=feval(f,a);
+    fb=feval(f,b);
+    f1=feval(f,x1);
+    f2=feval(f,x2);
+    f3=feval(f,x3);
+    vf=5;
+end
+h=(b-a)/180;
+I1=h*(14*fa+64*f1+24*f2+64*f3+14*fb);
+x4=(a+x1)/2;
+x5=(x1+x2)/2;
+x6=(x2+x3)/2;
+x7=(x3+b)/2;
+f4=feval(f,x4);
+f5=feval(f,x5);
+f6=feval(f,x6);
+f7=feval(f,x7);
+I2=.5*h*(14*fa+64*f4+24*f1+64*f5+28*f2+64*f6+24*f3+64*f7+14*fb);
+vf=vf+4;
+e=abs(I2-I1)/63;
+if e>tol
+    [left,vf1]=adapquad(a,x2,f,tol,fa,f4,f1,f5,f2);
+    [right,vf2]=adapquad(x2,b,f,tol,f2,f6,f3,f7,fb);
+    I2=left+right;
+    vf=vf+vf1+vf2;
+end
+return
+end    
+\end{lstlisting}
 
-\paragraph{Soluzione:}
 
-
+\newpage
 \paragraph{Esercizio 30:}
 Confrontare le formule adattative degli ultimi due esercizi, tabulando il numero
 di valutazioni funzionali effettuate, rispetto alla tolleranza \texttt{tol = 1e-2, 1e-3, ..., 1e-9}, per
 ottenere l’approssimazione dell’integrale \\
-
 $$\int_{10^{-5}}^{1}x^{-1}\cos(\log(x^{-1}))dx\equiv\sin(\log(10^{5}))$$
-
 Costruire un’altra tabella, in cui si tabula l’errore vero (essendo l’integrale noto, in questo caso)
 rispetto a \texttt{tol}.
 \paragraph{Soluzione:}
-
 \begin{center}
 \begin{tabular}{||c || c | c | c | c ||} 
     \hline
@@ -1422,7 +1571,6 @@ rispetto a \texttt{tol}.
     \hline
 \end{tabular}
 \end{center}
-
 
 \begin{center}
     \begin{tabular}{||c || c | c | c | c ||} 
