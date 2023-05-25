@@ -1417,7 +1417,7 @@ err=abs(IfH-If)/(2^(k+u)-1);
 \paragraph{Esercizio 27:}
 Utilizzare la function \texttt{composita} per ottenere l’approssimazione dell’integrale\\
 $$\int_{0}^{1}(\sum_{i=1}^{5}i\cos(2\pi{ix})-e^{i}\sin(2(\pi{i}+0.1)x))dx$$
-con le formule composite di Newton-Cotes di grado \texttt{k=1,2,3,4,5,6}. Per tutte, utilizzare \texttt{n=12}.
+con le formule composite di Newton-Cotes di grado \texttt{k=1,2,3,6}. Per tutte, utilizzare \texttt{n=12}.
 \paragraph{Soluzione:}
 
 Utilizzando le formule composite di Newton-Cotes con n=12 per approssimare l'integrale si vanno ad ottenere i seguenti risultati: \\
@@ -1434,15 +1434,12 @@ Utilizzando le formule composite di Newton-Cotes con n=12 per approssimare l'int
         \hline
         3 & 0.114030927423084 & 0.029823785706593 \\
         \hline
-        4 & -0.319945114047115 & 0.722404779651618 \\
-        \hline
         6 & -0.702525851480416 & 0.002428474323110 \\
         \hline
         \hline
     \end{tabular}
     \end{center}
-La formula di Newton-Cotes di grado 5 non possono essere calcolate perchè la function composita causa un errore non essendo n un multiplo pari di k.
-Nonostante ciò si può notare come i risultati risultano essere imprecisi, infatti andando a graficare la funzione in esame negli estremi dell'intervallo di integrazione (e le ascisse usate) \\
+Si può notare come i risultati risultano essere imprecisi e discordanti tra loro, infatti andando a graficare la funzione in esame negli estremi dell'intervallo di integrazione \\
 \includegraphics[width=\linewidth]{plot27.jpg}
 possiamo notare che oscilla frequentemente, rendendo le formule più inaccurate per le ascisse considerate.
 Aumentando il numero di quest'ultime si può ridurre ulteriormente l'errore, d'altronde si ha:
