@@ -21,28 +21,32 @@ elseif nargin==3
 elseif nargin==4
     maxit=10e3;
 end
+x=x0;
+nit=-1;
+if nargin==3
+    tol=1e-13;
+    maxit=10e3;
+elseif nargin==4
+    maxit=10e3;
+end
 if tol<0
-    error('la tolleranza non deve essere negativa');
+    error('la tolleranza non può essere negativa');
 end
 if maxit<=0
     error('maxit deve essere maggiore di 0');
 end
-x=x0;
-nit=-1;
+%controllo dimensioni jacopiana
 for i=1:maxit
     fx = feval(fun,x);
     f1x = feval(jacobian,x);
-    if f1x == 0, error('Derivata prima uguale a 0'); end
-    dx=f1x\(-fx);
-    x = x + dx';
-    if abs(x-x0)<=tol*(1+abs(x0))
+    dx=-f1x\(fx);
+    x = x + dx;
+    if norm(dx./(1+abs(x)),Inf)<=tol
         nit=i;
         break;
-    else
-        x0 = x;
     end
 end
 
-if nit == -1, disp('Il metodo di Newton per il sistema lineare non converge');end
+if nit == -1, disp('Tolleranza desiderata non raggiunta');end
 end
 

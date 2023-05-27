@@ -939,8 +939,8 @@ for i=1:maxit
     fx = feval(fun,x);
     f1x = feval(jacobian,x);
     if f1x == 0, error('Derivata prima uguale a 0'); end
-    dx=f1x\(-fx);
-    x = x + dx';
+    dx=-f1x\(fx);
+    x = x + dx;
     if abs(x-x0)<=tol*(1+abs(x0))
         nit=i;
         break;
@@ -988,7 +988,7 @@ il sistema nonlineare derivante dalla determinazione del punto stazionario della
 \end{equation*}
 utilizzando tolleranze \texttt{tol = 1e-3, 1e-8, 1e-13}. Graficare la soluzione e tabulare in modo con- veniente i risultati ottenuti.
 \paragraph{Soluzione:}
-
+Usando la funzione \texttt{newton} su \(\bigtriangledown f(x)\) (definito in Matlab come \\ \texttt{Q*x-((pi/2).*cos((pi/2)*x)+1).*e}) si ottiene:
 
 
 \paragraph{Esercizio 16:}

@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1685057714 "e:/CN/elaboratoCN/Latex CN/elaborato.tex" "elaborato.pdf" "elaborato" 1685057716 0
+["pdflatex"] 1685209754 "e:/CN/elaboratoCN/Latex CN/elaborato.tex" "elaborato.pdf" "elaborato" 1685209756 0
   "c:/texlive/2022/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1677088706 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "c:/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1677090285 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2022/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1677089675 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
@@ -99,9 +99,9 @@
   "c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1677096996 4662804 131178ccc9b2f4741a821427ce79dce1 ""
   "c:/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt" 1677097131 7879501 dd323a264d731d88f639b2d8634e169f ""
   "c:/texlive/2022/texmf.cnf" 1677096964 713 e69b156964470283e0530f5060668171 ""
-  "e:/CN/elaboratoCN/Latex CN/elaborato.tex" 1685057713 62353 9c1ae1b6466136b9756baf0d7045a5d5 ""
-  "elaborato.aux" 1685057716 5289 37377201d424a33381efb8f9554a2697 "pdflatex"
-  "elaborato.tex" 1685057713 62353 9c1ae1b6466136b9756baf0d7045a5d5 ""
+  "e:/CN/elaboratoCN/Latex CN/elaborato.tex" 1685209754 62498 92f2e21c746f88782eb8e7c996e28da8 ""
+  "elaborato.aux" 1685209756 5289 37377201d424a33381efb8f9554a2697 "pdflatex"
+  "elaborato.tex" 1685209754 62498 92f2e21c746f88782eb8e7c996e28da8 ""
   "immagini//errori24.jpg" 1685056767 27921 518e19d8dffe206e908e3cfb8b625d06 ""
   "immagini//plot27.jpg" 1684956307 49640 2a6b636c02320081d540a9a24bb5388d ""
   (generated)
