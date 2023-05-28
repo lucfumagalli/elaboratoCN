@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.2.22)  27 MAY 2023 19:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.2.22)  28 MAY 2023 19:25
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -401,12 +401,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [12]
-Underfull \hbox (badness 10000) in paragraph at lines 819--828
+Underfull \hbox (badness 10000) in paragraph at lines 818--827
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 819--828
+Underfull \hbox (badness 10000) in paragraph at lines 818--827
 
  []
 
@@ -474,14 +474,14 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [20]
-Underfull \hbox (badness 10000) in paragraph at lines 1283--1284
+Underfull \hbox (badness 10000) in paragraph at lines 1282--1283
 
  []
 
 <./immagini//errori24.jpg, id=87, 865.2325pt x 590.205pt>
 File: ./immagini//errori24.jpg Graphic file (type jpg)
 <use ./immagini//errori24.jpg>
-Package pdftex.def Info: ./immagini//errori24.jpg  used on input line 1304.
+Package pdftex.def Info: ./immagini//errori24.jpg  used on input line 1303.
 (pdftex.def)             Requested size: 512.14964pt x 349.37067pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -499,12 +499,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [22 <./immagini//errori24.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 1376--1377
+Underfull \hbox (badness 10000) in paragraph at lines 1375--1376
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1418--1419
+Underfull \hbox (badness 10000) in paragraph at lines 1417--1418
 
  []
 
@@ -516,19 +516,19 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [23]
-Overfull \hbox (3.47339pt too wide) in paragraph at lines 1423--1424
+Overfull \hbox (3.47339pt too wide) in paragraph at lines 1422--1423
  \OT1/cmr/bx/n/12 Soluzione:[] \OT1/cmr/m/n/12 Uti-liz-zando le for-mule com-pos-ite di Newton-Cotes con n=12 per ap-prossi-mare l'integrale
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1423--1424
+Underfull \hbox (badness 10000) in paragraph at lines 1422--1423
 
  []
 
 <./immagini//plot27.jpg, id=98, 993.7125pt x 614.295pt>
 File: ./immagini//plot27.jpg Graphic file (type jpg)
 <use ./immagini//plot27.jpg>
-Package pdftex.def Info: ./immagini//plot27.jpg  used on input line 1443.
+Package pdftex.def Info: ./immagini//plot27.jpg  used on input line 1442.
 (pdftex.def)             Requested size: 512.14964pt x 316.60448pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -554,7 +554,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [26]
-Underfull \hbox (badness 10000) in paragraph at lines 1567--1570
+Underfull \hbox (badness 10000) in paragraph at lines 1566--1569
 
  []
 
@@ -575,7 +575,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  57i,13n,72p,391b,1779s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/texlive/2022/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}<c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on elaborato.pdf (28 pages, 403724 bytes).
+Output written on elaborato.pdf (28 pages, 402192 bytes).
 PDF statistics:
  198 PDF objects out of 1000 (max. 8388607)
  124 compressed objects within 2 object streams
