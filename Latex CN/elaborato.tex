@@ -59,13 +59,13 @@ $$ -\frac{1}{4}f(x-h)-\frac{5}{6}f(x)+\frac{3}{2}f(x+h)-\frac{1}{2}f(x+2h)+\frac
 \paragraph{Soluzione:} 
 Innanzitutto per semplificare i calcoli si può raccogliere: 
 $$ \frac{1}{12}[-3f(x-h)-10f(x)+18f(x+h)-6f(x+2h)+f(x+3h)]=hf'(x) + O(h^5)$$
-Se considero un \(h\) sufficientemente piccolo posso considerare di approssimare la funzione con il polinomio di Taylor
+Considerando un \(h\) sufficientemente piccolo si può considerare di approssimare la funzione con il polinomio di Taylor
 centrato in \(x_0\) con la funzione:
 $$ f(x) = \sum_{k=0}^{\infty}{\frac{f^{(k)}(x_0)}{n!}(x-x_0)^k}$$
 Basterà approssimare il polinomio al quarto ordine:
 $$ f(x) = f(x_0) + f'(x_0)(x-x_0) + \frac{f''(x_0)}{2!}(x-x_0)^2+\frac{f'''(x_0)}{3!}(x-x_0)^3+$$
 $$ + \frac{f''''(x_0)}{4!}(x-x_0)^4+O((x-x_0)^5)$$
-Da cui possiamo ricavare:
+Da cui si può ricavare:
 \begin{equation}
     \begin{aligned}
         & f(x-h) = f(x) - hf'(x) + \frac{h^2}{2}f''(x)- \frac{h^3}{6}f'''(x)+ \frac{h^4}{24}f''''(x_0) + O(h^5)  \\
@@ -74,7 +74,7 @@ Da cui possiamo ricavare:
         & f(x+3h) = f(x) + 3hf'(x) + \frac{9}{2}h^2f''(x)+ \frac{9}{2}h^3f'''(x)+ \frac{27}{8}h^4f''''(x_0) + O(h^5)  
     \end{aligned}
 \end{equation}
-Possiamo, quindi, andare a sostituire:
+Quindi andando a sostituire si ottiene:
 \begin{equation}
     \begin{aligned}
         &\frac{-3f(x-h)-10f(x)+18f(x+h)-6f(x+2h)+f(x+3h)}{12}=\\
@@ -114,11 +114,11 @@ $$ |\epsilon_x| =\frac{|fl(x)-x|}{|x|}=\frac{|1-(1+2^{-53})|}{|1+2^{-53}|}=\frac
 
 \paragraph{Soluzione:}
 La cancellazione numerica si verifica quando si perdono delle cifre significative durante un'operazione di somma algebrica, con addendi quasi opposti.
-Questo è dovuto al fatto che la somma è un'operazione malcondizionata e lo possiamo studiare, verificando il condizionamento di \(y=x_1+x_2,\;\;\; x_1,x_2 \in \mathbb{R} \;\;\;\text{con}\;\; x_1+x_2\neq 0\).
+Questo è dovuto al fatto che la somma è un'operazione malcondizionata ed è possibile studiarlo, verificando il condizionamento di \(y=x_1+x_2,\;\;\; x_1,x_2 \in \mathbb{R} \;\;\;\text{con}\;\; x_1+x_2\neq 0\).
 
-Siano \(\epsilon_1 \;\text{e}\; \epsilon_2\) gli errori relativi sui dati iniziali e considerando che non venga introdotto nessun nuovo errore nel calcolo della somma precedente, otteniamo:
+Siano \(\epsilon_1 \;\text{e}\; \epsilon_2\) gli errori relativi sui dati iniziali e considerando che non venga introdotto nessun nuovo errore nel calcolo della somma precedente, si ottiene:
 $$ y(1+\epsilon_y)=x_1(1+\epsilon_1)+x_2(1+\epsilon_2)$$
-Da cui possiamo ricavare che:
+Da cui si può ricavare che:
 $$ |\epsilon_y|\leq \frac{|x_1|+|x_2|}{|x_1+x_2|}\epsilon_x\equiv k\epsilon_x \;\;\;\text{con}\;\; \epsilon_x = max\{|\epsilon_1|,|\epsilon_2|\} $$
 Il numero \(k\), quindi, indica il numero di condizionamento, che può essere arbitrariamente grande, nel caso di due addendi quasi opposti tra loro. 
 Ciò significa che l'operazione di somma tra numeri quasi opposti è malcondizionata.
@@ -137,13 +137,13 @@ calcoli \(\sqrt[6]{x}\) utilizzando solo operazioni algebriche elementari, con l
 \paragraph{Soluzione:}
 E' possibile notare che la radice sesta di un numero k sia data dalla soluzione positiva dell'equazione \( x^6 = k \), che può essere riscritta come \( x^6 - n= 0 \).
 Ciò equivale a ricercare la radice della funzione nel semiasse positivo delle ascisse della funzione \(f(x)=x^6-k\), è possibile quindi usare il metodo di Newton per trovarla.
-Quindi il passo iterativo dell'algoritmo risulta essere:
+Quindi il passo iterativo dell'algoritmo diventa:
 $$x_{n+1}=x_n - \frac{f(x_n)}{f'(x_n)} = x_n - \frac{x_n^6 - k}{6x_n^5} = x_n - \frac{1}{6}(x_n - \frac{k}{x_n^5})$$
-Da questo risultato si giunge nel formulare il seguente metodo iterativo che converge verso la radice di un numero x:
+Da questo risultato si giunge nel formulare il seguente metodo iterativo che converge verso la radice sesta di un numero x:
 \begin{enumerate}
     \item Si stima un valore iniziale di partenza \(x_0\)
     \item Dopodiché si pone \(x_{n+1}=x_n + \bigtriangleup x_n\;\; \text{in cui}\;\; \bigtriangleup x_n = (\frac{x}{x^{5}_n}-x_n)\frac{1}{6} \quad \forall n=0,1,2,...\)
-    \item Reiteriamo il passo precedente finchè non risulta che la differenza \(|x_{n+1}-x_n|\)  sia minore di una precisione scelta
+    \item Viene reiterato il passo precedente finchè non risulta che la differenza \(|x_{n+1}-x_n|\)  sia minore di una precisione scelta
 \end{enumerate}
 Traducendo il precedente algoritmo in Matlab, otteniamo il seguente codice:
 \begin{lstlisting}[frame=single]
@@ -167,7 +167,7 @@ end
 y=x1;
 return
 \end{lstlisting}
-Con il seguente codice vado a generare 20 valori equispaziati logaritmicamente nell'intervallo \([1e-10,1e10]\) e metto in comparazione la rappresentazione esatta della radice con
+Con il seguente codice si vanno a generare 20 valori equispaziati logaritmicamente nell'intervallo \([1e-10,1e10]\) e vengono comparate la rappresentazione esatta della radice con
 quella della funzione radice precedente:
 \begin{lstlisting}[frame=single]
 approssimato = zeros(1,20);
@@ -182,7 +182,7 @@ end
 variabili = {'n', 'approssimato', 'esatto', 'errore'};
 table(x',approssimato',esatto', errore','VariableNames',variabili);  
 \end{lstlisting}
-Ottengo così i seguenti risultati:
+Si ottengono così i seguenti risultati:
 \begin{center}
     \begin{tabular}{||c | c | c | c | c||} 
         \hline
@@ -357,7 +357,7 @@ Tabulare i risultati, in modo da confrontare il costo computazionale e l’accur
         \hline
     \end{tabular}
 \end{center}
-Come possiamo notare dai precedenti risultati, in entrambi i metodi, essendo la funzione una radice multipla, si eseguono molte più iterazioni rispetto alla funzione 
+Com'è possibile notare dai precedenti risultati, in entrambi i metodi, essendo la funzione una radice multipla, si eseguono molte più iterazioni rispetto alla funzione 
 dell'Esercizio 6, in alcuni casi neanche convergono.
 In particolare risulta che il metodo di Newton non converga su tolleranza pari a \texttt{1e-12} mentre il metodo delle secanti non converga nel caso la tolleranza sia pari a:
 \texttt{1e-9, 1e-12}.
@@ -704,7 +704,7 @@ Perciò utilizzando i risultati come input della \textit{function} \texttt{mialu
         \end{pmatrix}
     \end{equation*}
     Il risultato è pressoché identico al risultato atteso. D'altra parte il numero di condizionamento \(K\) della matrice A1, dato dalla funzione \texttt{cond(A1)}
-    è pari a \(K = 2.5000e+00\). Questo numero ci fa capire che il problema è quindi ben condizionato, essendo piccolo.
+    è pari a \(K = 2.5000e+00\). Ciò significa che il problema è quindi ben condizionato, essendo \(K\) piccolo.
     \item Nel secondo caso invece, ovvero calcolando \texttt{x2 = mialu(A2,b2)}, il vettore risultante è:
     \begin{equation*} x_2=
         \begin{pmatrix}
@@ -716,7 +716,7 @@ Perciò utilizzando i risultati come input della \textit{function} \texttt{mialu
         \end{pmatrix}
     \end{equation*}
     Il cui numero di condizionamento della matrice A2, dato dalla funzione \texttt{cond(A2)} è pari a \(K = 9.999995892902628e+09\). Dato che il numero ottenuto è molto 
-    grande, ci fa capire che siamo di fronte ad un problema mal condizionato. \\
+    grande, significa che il problema risulta mal condizionato in questo caso. \\
     Questo è dovuto all'operazione con cui otteniamo la matrice A2, in particolare all'operazione: \texttt{ diag ([1e-10 2/n:1/n:1])}, in cui il primo elemento della matrice 
     diagonale è molto vicino allo zero:
     \begin{equation*} D=
@@ -728,7 +728,8 @@ Perciò utilizzando i risultati come input della \textit{function} \texttt{mialu
             0 & 0 & 0 & 0 & 1
         \end{pmatrix}\;\;\;\;\;
     \end{equation*}
-    Il motivo per cui tale valore rende il problema mal condizionato deriva dalla costruzione della matrice A2 mediante \(A=Q_1 * D * Q_2\), infatti per calcolare la matrice inversa Basterà ricordare che \(Q_1\) e \(Q_2\) sono matrici ortogonali, ottendendo:
+    Infatti, ricordando la costruzione della matrice A2 mediante \(A=Q_1 * D * Q_2\), 
+    per calcolare la matrice inversa basterà ricordare che \(Q_1\) e \(Q_2\) sono matrici ortogonali, ottendendo:
     \(A^{-1}=Q_2^{-1} * D^{-1} * Q_1^{-1} = Q_2^{T} * D^{-1} * Q_1^{T}\).\\
     Inoltre si può notare che la matrice inversa di una matrice diagonale è una matrice diagonale dove gli elementi diagonali sono il reciproco rispetto alla matrice di partenza:
     \begin{equation*} D^{-1}=
@@ -741,7 +742,7 @@ Perciò utilizzando i risultati come input della \textit{function} \texttt{mialu
         \end{pmatrix}\;\;\;\;\;
     \end{equation*}
     Calcolando quindi la matrice inversa con la formula sopra illustrata si ottiene che 
-    moltiplicando \(Q1^{T}\) per \(D\) si va' a realizzare una matrice dove la prima colonna avrà elementi nell'ordine di \(1e9\), 
+    moltiplicando \(Q1^{T}\) per \(D\) si realizza una matrice dove la prima colonna avrà elementi nell'ordine di \(1e9\), 
     tale matrice moltiplicata per \(Q_2^{T}\) infine produce una matrice dove tutti gli elementi 
     raggiungono valori altissimi, come si può notare dalla norma della matrice inversa:
     \begin{equation*}
@@ -750,9 +751,7 @@ Perciò utilizzando i risultati come input della \textit{function} \texttt{mialu
     \Arrowvert A1^{-1} \Arrowvert_{2}=2.5 \qquad
     \Arrowvert A2^{-1} \Arrowvert_{2}=1.0000e+10
     \end{equation*}
-    In generale si ha che \(\rho(A)\ \le \Arrowvert A \Arrowvert\)
-    Da questi risultati si evince quindi che la costruzione di A2 risulta peggiore rispetto a quella di A1
-    \textbf{DA FINIRE!}
+    Da questi risultati si evince quindi che la costruzione di A2 risulta peggiore rispetto a quella di A1 visto che risulta più sensibile ad errori.
 \end{enumerate}
 \paragraph{Esercizio 12:} Risolvere, utilizzando la \textit{function} \texttt{mialdlt}, i sistemi lineari generati da\\ \texttt{[A1,A2,b1,b2]=linsis(5,1)}. 
 Commentare l’accuratezza dei risultati ottenuti, dandone spiegazione esaustiva.
@@ -770,7 +769,7 @@ Similmente al caso precedente usando la \textit{function} \texttt{mialdl}, otten
         \end{pmatrix}
     \end{equation*}
     Il risultato è pressoché identico al risultato atteso. D'altra parte il numero di condizionamento \(K\) della matrice A1, dato dalla funzione \texttt{cond(A1)}
-    è pari a \(K = 2.5000e+00\). Questo numero ci fa capire che il problema è quindi ben condizionato, essendo piccolo.
+    è pari a \(K = 2.5000e+00\), quindi il problema è  ben condizionato.
     \item Nel secondo caso invece, ovvero calcolando \texttt{x2 = mialdl(A2,b2)}, il vettore risultante è:
     \begin{equation*} x_2=
         \begin{pmatrix}
@@ -782,8 +781,8 @@ Similmente al caso precedente usando la \textit{function} \texttt{mialdl}, otten
         \end{pmatrix}
     \end{equation*}
     Il cui numero di condizionamento della matrice A2, dato dalla funzione \texttt{cond(A2)} è pari a \(K = 9.999995645805687e+09\). Dato che il numero ottenuto è molto 
-    grande, ci fa capire che siamo di fronte ad un problema mal condizionato. \\
-    Tuttavia a differenza del caso precedente le matrici A1 e A2 vengono costruite mediante la formula : \(Q_1 * D * Q_1^{T}\), che ha particolarità di essere simmetrica,
+    grande significa che il problema è mal condizionato. \\
+    Tuttavia a differenza del caso precedente vengono costruite matrici simmetriche definite positive le matrici A1 e A2 vengono costruite mediante la formula : \(Q_1 * D * Q_1^{T}\), che ha particolarità di essere simmetrica,
     infatti la transposta è data data da: \((Q_1 * D * Q_1^{T})^{T}=Q_1*D^{T}*Q_1^{T}=Q_1 * D * Q_1^{T}\). 
     Per la precisione le matrici A1 e A2 sono entrambe simmetriche semidefinite positive, infatti:
     \(\forall x \in R^{n}, xQ_1 * D * Q_1^{T}x^{T} = (xQ_1) * D * (xQ_1)^{T}\), sostituendo \(xQ_1=y \in R^{n}\) con \(y \ne 0\) 
