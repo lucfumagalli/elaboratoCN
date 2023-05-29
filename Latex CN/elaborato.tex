@@ -89,7 +89,7 @@ Matlab utilizza la doppia precisione IEEE. Stabilire, pertanto, il nesso tra la 
 \textbf{eps} e la precisione di macchina di questa aritmetica.
 \paragraph{Soluzione:}
 Data la funzione \(fl: I \longrightarrow \mathcal{M}\), che associa ad ogni numero reale \(x \in \mathcal{I}\)
-, un corrispondente numero di macchina \(fl(x)\). 
+, un corrispondente numero di macchina \(fl(x) \in \mathcal{M}\). 
 
 Lo Standard in doppia precisione IEEE prevede la rappresentazione per arrotondamento del numero \(fl(x)\).
 
@@ -274,6 +274,7 @@ for i=1:maxit
 end
 
 if nit == -1, disp('Tolleranza desiderata non raggiunta');end
+return
 end 
 \end{lstlisting}
 \texttt{CODICE Matlab per il metodo delle secanti}
@@ -311,6 +312,7 @@ for i=1:maxit
 end
 
 if nit == -1, disp('Tolleranza desiderata non raggiunta');end
+return
 end
 \end{lstlisting}
 \paragraph{Esercizio 6:}Utilizzare le \(function\) del precedente esercizio per determinare una approssimazione della radice della funzione:
@@ -716,7 +718,7 @@ Perciò utilizzando i risultati come input della \textit{function} \texttt{mialu
         \end{pmatrix}
     \end{equation*}
     Il cui numero di condizionamento della matrice A2, dato dalla funzione \texttt{cond(A2)} è pari a \(K = 9.999995892902628e+09\). Dato che il numero ottenuto è molto 
-    grande, significa che il problema risulta mal condizionato in questo caso. \\
+    grande, significa che il problema risulta mal condizionato. \\
     Questo è dovuto all'operazione con cui otteniamo la matrice A2, in particolare all'operazione: \texttt{ diag ([1e-10 2/n:1/n:1])}, in cui il primo elemento della matrice 
     diagonale è molto vicino allo zero:
     \begin{equation*} D=
@@ -742,9 +744,9 @@ Perciò utilizzando i risultati come input della \textit{function} \texttt{mialu
         \end{pmatrix}\;\;\;\;\;
     \end{equation*}
     Calcolando quindi la matrice inversa con la formula sopra illustrata si ottiene che 
-    moltiplicando \(Q1^{T}\) per \(D\) si realizza una matrice dove la prima colonna avrà elementi nell'ordine di \(1e9\), 
+    moltiplicando \(Q_{1}^{T}\) per \(D\) si realizza una matrice dove la prima colonna avrà elementi nell'ordine di \(1e9\), 
     tale matrice moltiplicata per \(Q_2^{T}\) infine produce una matrice dove tutti gli elementi 
-    raggiungono valori altissimi, come si può notare dalla norma della matrice inversa:
+    raggiungono valori molto elevati, come si può notare dalla norma della matrice inversa:
     \begin{equation*}
     \Arrowvert A1 \Arrowvert_{2}=1 \qquad
     \Arrowvert A2 \Arrowvert_{2}=1 \qquad
@@ -807,7 +809,7 @@ Similmente al caso precedente usando la \textit{function} \texttt{mialdl}, otten
     Ciò tuttavia è vero solo in condizioni ottimali, infatti entrambe le matrici 
     sono soggette ad errori di round-off dovuti alla loro costruzione.
     Ciò si può notare anche solo usando il comando \texttt{isSymmetric()}
-    che per entrambe le matrici risulta essere falso, come si può anche notare come il 
+    che per entrambe le matrici risulta essere falso, si può anche notare come il 
     numero di condizionamento della seconda matrice calcolato 
     tramite Matlab va in contraddizione con quanto stabilito.
     Quindi il mal condizionamento del secondo sistema rispetto al primo, causa errori di imprecisione maggiori.
@@ -882,10 +884,10 @@ Applicando quindi la \textit{function} \texttt{miaqr} ai vari sistemi, si otteng
  sia equivalente a risolvere il sistema lineare sovradeterminato \texttt{(D*A)x = (D*b)}. Tuttavia possiamo notare che nel caso dei minimi quadrati ciò non è sempre vero. Infatti il problema di minimo nel secondo caso risulta essere:
  $$\min_{x \in \mathbb{R}^n}\Arrowvert (D*A)x-(D*b) \Arrowvert_{2}^2 = \Arrowvert D*(Ax-b) \Arrowvert_{2}^2$$
  Non è detto infatti che la soluzione \(x_1\) risolva questo nuovo problema, anzi, provando a sostituire ad x \(x_1\) otteniamo come risultato
- che la funzione obbiettivo ha come valore \(27.8400000000001\) che risulta essere una soluzione ben peggiore rispetto a quella data da \(x_2\). \\
+ che la funzione obiettivo ha come valore \(27.8400000000001\) che risulta essere una soluzione ben peggiore rispetto a quella data da \(x_2\). \\
  Possiamo notare che la quantità \(Ax-b\) risulta essere un vettore, per cui usando le proprietà delle norme:
  $$\Arrowvert D*(Ax-b) \Arrowvert_{2}^2 \le \Arrowvert D \Arrowvert_{2}^2 * \Arrowvert Ax-b \Arrowvert_{2}^2 $$
- Quindi il valore dell'obbiettivo del problema di minimo generato dal sistema \texttt{(D*A)x = (D*b)} risulta essere al massimo 
+ Quindi il valore dell'obbiettivo del problema di minimo generato dal sistema \texttt{(D*A)x = (D*b)} risulta essere al massimo. 
  Nel caso invece del terzo sistema, possiamo notare che la matrice altro non è che il risultato del prodotto \(\pi*I\).
 Il problema in questo caso risulterà essere:
 $$\min_{x \in \mathbb{R}^n}\Arrowvert (\pi*A)x-(\pi*b) \Arrowvert_{2}^2 = \Arrowvert \pi*(Ax-b) \Arrowvert_{2}^2 =\pi^2 * \Arrowvert Ax-b \Arrowvert_{2}^2 $$
@@ -949,6 +951,7 @@ for i=1:maxit
 end
 
 if nit == -1, disp('Il metodo di Newton per il sistema lineare non converge');end
+return
 end    
 \end{lstlisting}
 
@@ -1203,6 +1206,8 @@ x=(a+b)/2 + cos((2*(n:-1:0)+1)*pi./(2*(n+1))) * (b-a)/2;
 return
 end
 \end{lstlisting}
+
+
 \paragraph{Esercizio 20:}
 Costruire una function Matlab, con sintassi
 \begin{center}
@@ -1213,10 +1218,24 @@ i polinomi di grado specificato nel vettore \texttt{nn}, utilizzando ascisse equ
 Chebyshev, se \texttt{type=1} (utilizzare 10001 punti equispaziati nell'intervallo \texttt{[a,b]} per ottenere ciascuna componente di ll). 
 Graficare i risultati ottenuti, per \texttt{nn=1:100}, utilizzando \texttt{[a,b]=[0,1]} e \texttt{[a,b]=[-3,7]}. Giustificare i risultati ottenuti.
 
-\paragraph{Soluzione:}
+\paragraph{Soluzione:} Calcolo della costate di Lebesgue:
 
 \begin{lstlisting}[frame=single]
 function ll = lebesgue(a,b,nn,type)
+%
+%   ll = lebesgue(a,b,nn,type)
+%   Calcola un'approssimazione della costante di Lebesgue per 
+%   l'interpolazione polinomiale sull'intervallo [a,b]
+%
+%   Input:
+%   a,b: estremi intervallo
+%   nn: grado dei polinomi
+%   type: 
+%       0 - ascisse equidistanti
+%       1 - ascisse di Chebyshev
+%   Output:
+%   ll: approssimazione costante di Lebesgue ottenuta   
+%
 n=length(nn);
 ll=zeros(1,length(nn));
 f=@(n) linspace(a,b,n+1);
@@ -1248,7 +1267,9 @@ per la funzione di Runge,
 utilizzando sia le ascisse equidistanti che di Chebyshev, per i polinomi interpolanti di grado \texttt{nn=2:2:100}.
 Graficare l'errore di interpolazione anche per i polinomi interpolanti di Hermite di grado \texttt{nn=3:2:99},
 sia utilizzando ascisse equidistanti che ascisse di Chebyshev, nell'intervallo considerato.
-
+\includegraphics[width=\textwidth]{esercizio21_1.png}
+\includegraphics[width=\textwidth]{esercizio21_2.png}
+\includegraphics[width=\linewidth]{esercizio21_3.png}
 \paragraph{Soluzione:}
 
 
