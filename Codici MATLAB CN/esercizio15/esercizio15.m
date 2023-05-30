@@ -18,3 +18,8 @@ hold on;
 plot(1:100,Gf(resX(:,[1:3])));
 legend;
 hold off;
+nGf=zeros(1,3);
+for i=1:3
+    nGf(i)=norm(Gf(resX(:,i)),2);
+end
+t=table(tol',nGf','VariableNames',{'tol' 'norma gradiente'});

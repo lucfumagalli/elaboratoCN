@@ -28,14 +28,11 @@ if mod((n/k),2)~=0
 end
 x=linspace(a,b,n+1);
 y=fun(x);
-disp(y);
 h=(b-a)/n;
 c=pesiNewtCotes(k);
-disp(c);
 If=0;
 for i=1:k:n+1-k
     If=If+sum(y(i:i+k).*c);
-    disp(If);
 end
 If=h*If;
 IfH=0;

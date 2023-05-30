@@ -4,8 +4,8 @@ b = A*x;
 xMatlab = linsolve(A,b);
 xMialu = mialu(A,b);
  
- A = randi([-3,3],4);
- x = randi([-3,3],4,1);
- b = A*x;
- xMatlab = linsolve(A,b);
- xMialu = mialu(A,b);
+ A2 = randi([-3,3],4);
+ x2 = randi([-3,3],4,1);
+ b2 = A2*x2;
+ xMatlab2 = linsolve(A2,b2);
+ xMialu2 = mialu(A2,b2);

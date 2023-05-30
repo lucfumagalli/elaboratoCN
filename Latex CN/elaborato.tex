@@ -1186,7 +1186,7 @@ end
 return
 end
 \end{lstlisting}
-\newpage
+
 \begin{tcolorbox}
 \paragraph{Esercizio 18:}
 Costruire una function, \texttt{hermite.m}, avente sintassi
@@ -1646,6 +1646,33 @@ multiplo pari di \texttt{k}, in cui:
 \paragraph{Soluzione:} Calcolo della formula composita di Newton-Cotes di grado \texttt{k} su \texttt{n+1} ascisse equidistanti.
 \begin{lstlisting}[frame=single]
 function [If,err] = composita(fun, a, b, k, n)
+%
+%   [If,err] = composita(fun,a,b,k,n)
+%
+%   Stima dell'integrale definito cone le formule composite di Newton-Cotes
+%
+%   Input:
+%   fun: funzione integrale
+%   a : lato destro intervallo di integrazione 
+%   b: lato destron intervallo di integrazione
+%   k: grado della formula di Newton-Cotes
+%   n: numero di punti da usare (deve essere un multiplo pari di k)
+%
+%   Output:
+%   If: valore dell'integrale
+%   err: stima dell'errore
+%
+if a==b
+    If=0;
+    err=0;
+    return
+end
+if a>b
+    error('intervallo non corretto');
+end
+if mod((n/k),2)~=0
+    error('n deve essere un multiplo pari di k');
+end
 x=linspace(a,b,n+1);
 y=fun(x);
 h=(b-a)/n;
@@ -1660,15 +1687,11 @@ for i=1:2*k:n+1-2*k
     IfH=IfH+sum(y(i:2:i+2*k).*c);
 end
 IfH=2*h*IfH;
-if mod(k,2)==1
-    u=1;
-else
-    u=2;
-end
+u = 2-mod(k,2);
 err=abs(IfH-If)/(2^(k+u)-1);
+return
 \end{lstlisting}
 
-\newpage
 \begin{tcolorbox}
 \paragraph{Esercizio 27:}
 Utilizzare la function \texttt{composita} per ottenere l’approssimazione dell’integrale\\
@@ -1701,7 +1724,7 @@ possiamo notare che oscilla frequentemente, rendendo le formule più inaccurate 
 Aumentando il numero di quest'ultime si può ridurre ulteriormente l'errore, d'altronde si ha:
 $$E_k^{(n)} = v_k f^{(k+u)}(\xi)\biggl(\frac{b-a}{k}\biggr)\biggl(\frac{b-a}{n}\biggr)^{(k+u)} con  \xi \in [a,b]$$
 che sappiamo tende a 0 per n che tende ad infinito, altrimenti si possono usare pure le formule adattive.
-\newpage
+
 \begin{tcolorbox}
 \paragraph{Esercizio 28:}
 Implementare la formula composita adattativa di Simpson.
