@@ -1,0 +1,11 @@
+nn=2:2:100;
+nnH=3:2:99;
+f=@(x) 1./(1+x.^2);
+f1=@(x) (-2.*x)./((1+x.^2).^2);
+plotEquiCheby(-5,5,f,@lagrange,nn,"Lagrange");
+figure;
+plotEquiCheby(-5,5,f,@newton,nn,"Newton");
+figure;
+errEqui=size(nnH);
+errCheby=size(nnH);   
+plotEquiCheby(-5,5,f,@hermite,nnH,"Hermite",f1);

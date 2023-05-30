@@ -1,10 +1,13 @@
 \documentclass[12pt]{article}
 \usepackage{graphicx}
+\usepackage{float}
+\usepackage{tcolorbox}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{geometry}
 \usepackage{fancyhdr}
 \usepackage{adjustbox}
+\usepackage{imakeidx}
 \geometry{a4paper, top=2cm, bottom=2cm, left=1cm, right=1.5cm,  heightrounded, bindingoffset=5mm}
 \pagestyle{fancy}
 \fancyfoot[RO]{}
@@ -53,9 +56,12 @@
 
 \end{titlepage}
 
+
+\begin{tcolorbox}
 \paragraph{Esercizio 1:}
 Verificare che:
 $$ -\frac{1}{4}f(x-h)-\frac{5}{6}f(x)+\frac{3}{2}f(x+h)-\frac{1}{2}f(x+2h)+\frac{1}{12}f(x+3h)=hf'(x) + O(h^5)$$
+\end{tcolorbox}
 \paragraph{Soluzione:} 
 Innanzitutto per semplificare i calcoli si può raccogliere: 
 $$ \frac{1}{12}[-3f(x-h)-10f(x)+18f(x+h)-6f(x+2h)+f(x+3h)]=hf'(x) + O(h^5)$$
@@ -84,14 +90,15 @@ Quindi andando a sostituire si ottiene:
     \end{aligned}
 \end{equation}
 \pagebreak
+
+\begin{tcolorbox}
 \paragraph{Esercizio 2:}
 Matlab utilizza la doppia precisione IEEE. Stabilire, pertanto, il nesso tra la variabile
 \textbf{eps} e la precisione di macchina di questa aritmetica.
+\end{tcolorbox}
 \paragraph{Soluzione:}
 Data la funzione \(fl: I \longrightarrow \mathcal{M}\), che associa ad ogni numero reale \(x \in \mathcal{I}\)
-, un corrispondente numero di macchina \(fl(x) \in \mathcal{M}\). 
-
-Lo Standard in doppia precisione IEEE prevede la rappresentazione per arrotondamento del numero \(fl(x)\).
+, un corrispondente numero di macchina \(fl(x) \in \mathcal{M}\), lo Standard in doppia precisione IEEE prevede la rappresentazione per arrotondamento del numero \(fl(x)\).
 
 Possiamo quindi affermare che se \(x \in \mathcal{I}, x\neq 0\), allora:
 $$ fl(x)=x(1+\epsilon_x), \;\;\;\; |\epsilon_x|\leq u$$
@@ -109,9 +116,9 @@ Dato che \textbf{eps} rappresenta quindi, la distanza tra 1 e il successivo nume
 , il quale è rappresentato da \(fl(x)=1\) dato che \(u\leq eps\). 
 L'errore relativo commesso su \(x\) perciò è:
 $$ |\epsilon_x| =\frac{|fl(x)-x|}{|x|}=\frac{|1-(1+2^{-53})|}{|1+2^{-53}|}=\frac{2^{-53}}{1+2^{-53}} \le 2^{-53}=u \le eps$$
-
+\begin{tcolorbox}
 \paragraph{Esercizio 3:} Spiegare il fenomeno della cancellazione numerica. Fare un esempio che la illustri, spiegandone i dettagli.
-
+\end{tcolorbox}
 \paragraph{Soluzione:}
 La cancellazione numerica si verifica quando si perdono delle cifre significative durante un'operazione di somma algebrica, con addendi quasi opposti.
 Questo è dovuto al fatto che la somma è un'operazione malcondizionata ed è possibile studiarlo, verificando il condizionamento di \(y=x_1+x_2,\;\;\; x_1,x_2 \in \mathbb{R} \;\;\;\text{con}\;\; x_1+x_2\neq 0\).
@@ -131,9 +138,11 @@ $$|\epsilon_y| = |\frac{5.55*10^{-5}-1*10^{-4}}{5.55*10^{-5}}|\simeq 0.8018$$
 Andando quindi a calcolare il numero di condizionamento \(k\), otteniamo:
 $$ k=\frac{|x_1|+|x_2|}{|x_1+x_2|}=\frac{|0.2345666|+|-0.2345111|}{|0.2345666-0.2345111|}=8.45*10^3$$
 perciò avendo un numero notevolmente alto, la somma precedente è malcondizionata e abbiamo una perdita di cifre significative. 
+\begin{tcolorbox}
 \paragraph{Esercizio 4:}Scrivere una function Matlab, \texttt{radice(x)} che, avendo in ingresso un numero x non negativo, 
 calcoli \(\sqrt[6]{x}\) utilizzando solo operazioni algebriche elementari, con la massima precisione possibile. Confrontare con il risultato fornito da 
 \(x^{(1/6)}\) per 20 valori di x, equispaziati logaritmicamente nell’intervallo \([1e-10,1e10]\), tabulando i risultati in modo che si possa verificare che si è ottenuta la massima precisione possibile.
+\end{tcolorbox}
 \paragraph{Soluzione:}
 E' possibile notare che la radice sesta di un numero k sia data dalla soluzione positiva dell'equazione \( x^6 = k \), che può essere riscritta come \( x^6 - n= 0 \).
 Ciò equivale a ricercare la radice della funzione nel semiasse positivo delle ascisse della funzione \(f(x)=x^6-k\), è possibile quindi usare il metodo di Newton per trovarla.
@@ -157,15 +166,20 @@ function y = radice(x)
 % Input: x, numero di cui calcolare la radice
 % Output: y, risultato dell'operazione di radice
 %
-if x<= 0, error('Il radicando non deve essere negativo'); end
+%
+
+if x<= 0, error("Il radicando non deve essere negativo"); end
 x0 = 1;
 x1 = x0 + (x/(x0^5)-x0)/6;
-while (abs(x1-x0)) > 1e-16
+err=1;
+while err>=eps*(1+abs(x0))
     x0 = x1;
-    x1 = x0 + (x/(x0^5)-x0)/6;
+    x1 = x0 + (x/(x0*x0*x0*x0*x0)-x0)/6;
+    err=abs(x1-x0);
 end
 y=x1;
 return
+end
 \end{lstlisting}
 Con il seguente codice si vanno a generare 20 valori equispaziati logaritmicamente nell'intervallo \([1e-10,1e10]\) e vengono comparate la rappresentazione esatta della radice con
 quella della funzione radice precedente:
@@ -188,9 +202,10 @@ Si ottengono così i seguenti risultati:
         \hline
         & n & approssimato & esatto & errore\\
         \hline
-        1 & 1.0000e-10 & 0.0215 & 0.0215 & 6.9389e-18\\
         \hline
-        2 & 1.1288e-09 & 0.0323 & 0.0323 & 0\\
+        1 & 1.0000e-10 & 0.0215 & 0.0215 & 3.4694e-18\\
+        \hline
+        2 & 1.1288e-09 & 0.0323 & 0.0323 & 6.9389e-18\\
         \hline
         3 & 1.2743e-08 & 0.0483 & 0.0483 & 6.9389e-18\\
         \hline
@@ -220,23 +235,26 @@ Si ottengono così i seguenti risultati:
         \hline
         16 & 6.1585e+05 & 9.2239 & 9.2239 & 0\\
         \hline
-        17 & 6.9519e+06 & 13.8150 & 13.8150 & 1.7764e-15\\
+        17 & 6.9519e+06 & 13.8150 & 13.8150 & 0\\
         \hline
         18 & 7.8476e+07 & 20.6914 & 20.6914 & 3.5527e-15\\
         \hline
         19 & 8.8587e+08 & 30.9905 & 30.9905 & 7.1054e-15\\
         \hline
-        20 & 1.0000e+10 & 46.4159 & 46.4159 & 1.4211e-14\\
+        20 & 1.0000e+10 & 46.4159 & 46.4159 & 7.1054e-15\\
         \hline
     \end{tabular}
 \end{center}
-Come si può notare, avendo scelto una tolleranza dell'ordine di \texttt{1e-16}, tutti gli errori sono molto piccoli e contenuti, alcuni nulli.
+E' possibile notare come i valori ottenuti dalla funzione si avvicinino molto ai valori reali, con una tolleranza che è vicina ad \texttt{eps}.
 \pagebreak
+
+\begin{tcolorbox}
 \paragraph{Esercizio 5:}
 Scrivere function Matlab distinte che implementino efficientemente i metodi di Newton e delle secanti per la ricerca degli zeri di una funzione \(f(x)\). 
 Per tutti i metodi, utilizzare come criterio di arresto:
 $$|x_{n+1} - x_n| \leq tol \cdot (1 + |x_n|)$$
 essendo \(tol\) una opportuna tolleranza specificata in ingresso. Curare particolarmente la robustezza del codice.
+\end{tcolorbox}
 \paragraph{Soluzione:}\mbox{}\\
 \texttt{CODICE Matlab per il metodo di Newton}
 \begin{lstlisting}[frame=single]
@@ -315,10 +333,12 @@ if nit == -1, disp('Tolleranza desiderata non raggiunta');end
 return
 end
 \end{lstlisting}
+\begin{tcolorbox}
 \paragraph{Esercizio 6:}Utilizzare le \(function\) del precedente esercizio per determinare una approssimazione della radice della funzione:
 $$f(x)=x-cos(x)$$
 per \(tol = 10^{-3}, 10^{-6}, 10^{-9}, 10^{-12}\), partendo da \(x_0 = 0\) (e \(x_1 = 0.1\) per il metodo delle secanti). 
 Tabulare i risultati, in modo da confrontare il costo computazionale di ciascun metodo.
+\end{tcolorbox}
 \paragraph{Soluzione:}
 
 \begin{center}
@@ -336,13 +356,15 @@ Tabulare i risultati, in modo da confrontare il costo computazionale di ciascun 
         \hline
     \end{tabular}
 \end{center}
-Il costo computazionale per ciascuna iterazione del metodo di Newton è pari a 2 valutazioni funzionali mentre per il metodo delle secanti è pari a 1.
-
-
+Considerando che per ciascuna iterazione del metodo di Newton si eseguono 2 valutazioni funzionali mentre per il metodo delle secanti ne viene fatta solo una,
+si ottiene che Newton utilizza un costo computazionale maggiore rispetto al metodo delle secanti in questo caso.
+\newpage
+\begin{tcolorbox}
 \paragraph{Esercizio 7:}Utilizzare le \(function\) dell'Esercizio 5 per determinare una approssimazione della radice della funzione:
 $$f(x)=[x-cos(x)^5]$$
 per \(tol = 10^{-3}, 10^{-6}, 10^{-9}, 10^{-12}\), partendo da \(x_0 = 0\) (e \(x_1 = 0.1\) per il metodo delle secanti). 
 Tabulare i risultati, in modo da confrontare il costo computazionale e l’accuratezza di ciascun metodo. Commentare i risultati ottenuti.\pagebreak
+\end{tcolorbox}
 \paragraph{Soluzione:}
 \begin{center}
     \begin{tabular}{|| c || c | c || c | c||} 
@@ -365,11 +387,13 @@ In particolare risulta che il metodo di Newton non converga su tolleranza pari a
 \texttt{1e-9, 1e-12}.
 
 In conclusione, in caso di radici multiple, non porta alcun vantaggio utilizzare metodi diversi da quello di Newton, anzi avremo un aumento considerevole nel numero di iterazioni.
+\begin{tcolorbox}
 \paragraph{Esercizio 8:}Scrivere una function Matlab,\\
 \texttt{function x = mialu(A,b)}\\
 che, data in ingresso una matrice \(A\) ed un vettore \(b\), calcoli la soluzione del sistema lineare \(Ax = b\) con il metodo di fattorizzazione \(LU\) 
 con \textit{pivoting parziale}. Curare particolarmente la scrittura e l’efficienza della function, e validarla su due esempi non banali, generati casualmente, 
 di cui sia nota la soluzione.
+\end{tcolorbox}
 \paragraph{Soluzione:}
 \texttt{CODICE Matlab per funzione mialu}
 \begin{lstlisting}[frame=single]
@@ -395,9 +419,6 @@ end
 p = [1:n];
 for i =1:n-1
     [mi,ki] = max(abs(A(i:n,i)));
-    disp(abs(A(i:n,i)));
-    disp(mi);
-    disp(ki)
     if mi == 0
         error('La matrice non puo'' essere singolare');
     end
@@ -420,6 +441,7 @@ for i = n-1:-1:1
     x(1:i) = x(1:i) - A(1:i,i+1)*x(i+1);
     x(i) = x(i)/A(i,i);
 end
+return
 end
 \end{lstlisting}
 \textbf{Esempi:}
@@ -463,10 +485,13 @@ end
 \end{equation}
 In entrambi i casi sono stati creati i valori della matrice \(A\) e del vettore \(x\) in modo casuale, mentre il vettore dei termini noti \texttt{b}, è stato calcolato tramite il prodotto
 \texttt{A*x}. Una volta inseriti i valori di \texttt{A} e \texttt{b} nella funzione \texttt{mialu(A,b)}, questa ha restituito il vettore x correttamente.
+\newpage
+\begin{tcolorbox}
 \paragraph{Esercizio 9:}Scrivere una function Matlab,\\
 \texttt{function x = mialdl(A,b)}\\
 che, data in ingresso una matrice \(A\) ed un vettore \(b\), calcoli la soluzione del corrispondente sistema lineare utilizzando la fattorizzazione \(LDL^{T}\). Curare particolarmente la scrittura e l’efficienza della function, e validarla su due esempi non banali, generati casualmente, 
 di cui sia nota la soluzione.
+\end{tcolorbox}
 \paragraph{Soluzione:}
 
 \texttt{CODICE Matlab per funzione mialdl}
@@ -547,12 +572,13 @@ end
 \end{equation}
 In entrambi i casi sono stati creati i valori della matrice \(A\) e del vettore \(x\) in modo casuale, mentre il vettore dei termini noti \texttt{b}, è stato calcolato tramite il prodotto
 \texttt{A*x}. Una volta inseriti i valori di \texttt{A} e \texttt{b} nella funzione \texttt{mialdl(A,b)}, questa ha restituito il vettore x correttamente.
-
+\begin{tcolorbox}
 \paragraph{Esercizio 10:}Scrivere una function Matlab,\\
 \texttt{function [x,nr] = miaqr(A,b)}\\
 che, data in ingresso la matrice \(A\;m \times  n\), con \(m \geq n = rank(A)\), ed un vettore \(b\) di lunghezza  \(m\), calcoli la soluzione del sistema lineare \(Ax = b\) nel senso dei minimi quadrati e, inoltre, 
 la norma, \(nr\), del corrispondente vettore residuo. Curare particolarmente la scrittura e l’efficienza della function. Validare la function miaqr su due esempi non banali, generati casualmente, 
 confrontando la soluzione ottenuta con quella calcolata con l’operatore Matlab \(\setminus\) 
+\end{tcolorbox}
 \paragraph{Soluzione:}
 
 \texttt{CODICE Matlab per funzione mialdl}
@@ -669,6 +695,7 @@ Mentre la soluzione generata da \(x=A\setminus b\) è:
         -4.5249e-01
     \end{pmatrix}
 \end{equation*}
+\begin{tcolorbox}
 \paragraph{Esercizio 11:}Data la function Matlab \\
 \begin{lstlisting}[frame=single]
 function [A1,A2,b1,b2] = linsis(n,simme)
@@ -691,6 +718,7 @@ che crea sistemi lineari casuali di dimensione n con soluzione nota,
 $$A_1x = b_1,\;\;\; A_2x = b_2, \;\;\;x = (1,...,1)^T \in \mathbb{R}^n,$$
 risolvere, utilizzando la \textit{function} \texttt{mialu}, i sistemi lineari generati da \texttt{[A1,A2,b1,b2]=linsis(5)}. 
 Commentare l’accuratezza dei risultati ottenuti, dandone spiegazione esaustiva.
+\end{tcolorbox}
 \paragraph{Soluzione:}
 Innanzitutto bisogna notare che eseguendo la function \texttt{linsis(5)}, che ha in input un solo argomento, andiamo a creare matrici non simmetriche. 
 Perciò utilizzando i risultati come input della \textit{function} \texttt{mialu}, otteniamo i seguenti risultati:
@@ -755,12 +783,14 @@ Perciò utilizzando i risultati come input della \textit{function} \texttt{mialu
     \end{equation*}
     Da questi risultati si evince quindi che la costruzione di A2 risulta peggiore rispetto a quella di A1 visto che risulta più sensibile ad errori.
 \end{enumerate}
+\begin{tcolorbox}
 \paragraph{Esercizio 12:} Risolvere, utilizzando la \textit{function} \texttt{mialdlt}, i sistemi lineari generati da\\ \texttt{[A1,A2,b1,b2]=linsis(5,1)}. 
-Commentare l’accuratezza dei risultati ottenuti, dandone spiegazione esaustiva.
+Commentare l’accuratezza dei risultati ottenuti, dandone spiegazione esaustiva.   
+\end{tcolorbox}
 \paragraph{Soluzione:}
-Similmente al caso precedente usando la \textit{function} \texttt{mialdl}, otteniamo i seguenti risultati:
+Similmente al caso precedente usando la \textit{function} \texttt{mialdlt}, otteniamo i seguenti risultati:
 \begin{enumerate}
-    \item Nel primo caso, ovvero calcolando \texttt{x1 = mialdl(A1,b1)}, il vettore risultante è: 
+    \item Nel primo caso, ovvero calcolando \texttt{x1 = mialdlt(A1,b1)}, il vettore risultante è: 
     \begin{equation*} x_1=
         \begin{pmatrix}
             1\\
@@ -772,7 +802,7 @@ Similmente al caso precedente usando la \textit{function} \texttt{mialdl}, otten
     \end{equation*}
     Il risultato è pressoché identico al risultato atteso. D'altra parte il numero di condizionamento \(K\) della matrice A1, dato dalla funzione \texttt{cond(A1)}
     è pari a \(K = 2.5000e+00\), quindi il problema è  ben condizionato.
-    \item Nel secondo caso invece, ovvero calcolando \texttt{x2 = mialdl(A2,b2)}, il vettore risultante è:
+    \item Nel secondo caso invece, ovvero calcolando \texttt{x2 = mialdlt(A2,b2)}, il vettore risultante è:
     \begin{equation*} x_2=
         \begin{pmatrix}
             1.000000052293492e+00\\
@@ -784,13 +814,14 @@ Similmente al caso precedente usando la \textit{function} \texttt{mialdl}, otten
     \end{equation*}
     Il cui numero di condizionamento della matrice A2, dato dalla funzione \texttt{cond(A2)} è pari a \(K = 9.999995645805687e+09\). Dato che il numero ottenuto è molto 
     grande significa che il problema è mal condizionato. \\
-    Tuttavia a differenza del caso precedente vengono costruite matrici simmetriche definite positive le matrici A1 e A2 vengono costruite mediante la formula : \(Q_1 * D * Q_1^{T}\), che ha particolarità di essere simmetrica,
-    infatti la transposta è data data da: \((Q_1 * D * Q_1^{T})^{T}=Q_1*D^{T}*Q_1^{T}=Q_1 * D * Q_1^{T}\). 
-    Per la precisione le matrici A1 e A2 sono entrambe simmetriche semidefinite positive, infatti:
-    \(\forall x \in R^{n}, xQ_1 * D * Q_1^{T}x^{T} = (xQ_1) * D * (xQ_1)^{T}\), sostituendo \(xQ_1=y \in R^{n}\) con \(y \ne 0\) 
-    (perché la matrice \(Q_1\) è non singolare (?)), avremo che \(y*D*y^{T}>0\) perchè gli elementi della matrice diagonale sono tutti positivi, e quindi la matrice è sdp.
+    Tuttavia a differenza del caso precedente vengono costruite matrici simmetriche definite positive infatti:
+    \begin{itemize}
+        \item costruendo la matrice con \(Q_1 * D * Q_1^{T}\) si ha che la transposta è data data da: \((Q_1 * D * Q_1^{T})^{T}=Q_1*D^{T}*Q_1^{T}=Q_1 * D * Q_1^{T}\). 
+        \item \(\forall x \in R^{n}, xQ_1 * D * Q_1^{T}x^{T} = (xQ_1) * D * (xQ_1)^{T}\), sostituendo \(xQ_1=y \in R^{n}\) con \(y \ne 0\) 
+        (perché la matrice \(Q_1\) è non singolare ), avremo che \(y*D*y^{T}>0\) perchè gli elementi della matrice diagonale sono tutti positivi, e quindi la matrice è definita positiva
+    \end{itemize}
     Questa costruzione ha anche un'altra particolarità, ovvero le matrici A1 e A2 sono simili alla matrice D. Infatti per definizione,
-    la matrice A e B sono simili se esiste una matrice M invertibile tale che: \(A=P^{-1}*B*P\). Considerando \(P=Q_1^{T}\) e \(B=D\) 
+    la matrice A e B sono simili se esiste una matrice P invertibile tale che: \(A=P^{-1}*B*P\). Considerando \(P=Q_1^{T}\) e \(B=D\) 
     allora si ha che: \(A=(Q_1^{T})^{-1}*D*Q_1^{T} = (Q_1^{-1})^{T}*D*Q_1^{T} = (Q_1^{T})^{T}*D*Q_1^{T} = Q_1*D*Q_1^{T}\). 
     Quindi ciò comporta che le matrici A1 e A2 hanno gli stessi autovalori, e quindi lo stesso raggio spettrale della matrice diagonale.
     Anche la matrice inversa di A1 e A2 risulta essere simile, come si può notare anche da \(A^{-1}=(Q_1^{T})*D^{-1}*Q_1\).
@@ -816,8 +847,8 @@ Similmente al caso precedente usando la \textit{function} \texttt{mialdl}, otten
 
 \end{enumerate}
 
-
-\paragraph{Ercizio 13:}Utilizzare la \textit{function} \texttt{miaqr} per risolvere, nel senso dei minimi quadrati, i sistemi lineari sovradeterminati\\
+\begin{tcolorbox}
+\paragraph{Esercizio 13:}Utilizzare la \textit{function} \texttt{miaqr} per risolvere, nel senso dei minimi quadrati, i sistemi lineari sovradeterminati\\
 \texttt{Ax = b, \;\;\;\;\;\;(D*A)x = (D*b),\;\;\;\;\;\; (D1*A)x = (D1*b),}\\
 definiti dai seguenti dati:\\\\
 \texttt{
@@ -826,6 +857,7 @@ b=[15 28 41 33 22]';\\
 D = diag(1:5);\\
 D1 = diag(pi*[1 1 1 1 1]).}\\\\
 Calcolare le corrispondenti soluzioni e residui, e commentare i risultati ottenuti.
+\end{tcolorbox}
 \paragraph{Soluzione:}
 Ricordando che risolvere il sistema nel senso dei minimi quadrati consiste in un problema di ottimizzazione nella forma:
 $$\min_{x \in \mathbb{R}^n}\Arrowvert Ax-b \Arrowvert_{2}^2$$
@@ -881,32 +913,31 @@ Applicando quindi la \textit{function} \texttt{miaqr} ai vari sistemi, si otteng
 \end{equation*}
 
  Dai risultati ottenuti è possibile notare una grande discrepanza tra quelli ottenuti con il primo e il secondo sistema, nonostante che risolvere il sistema lineare \texttt{Ax=b}
- sia equivalente a risolvere il sistema lineare sovradeterminato \texttt{(D*A)x = (D*b)}. Tuttavia possiamo notare che nel caso dei minimi quadrati ciò non è sempre vero. Infatti il problema di minimo nel secondo caso risulta essere:
- $$\min_{x \in \mathbb{R}^n}\Arrowvert (D*A)x-(D*b) \Arrowvert_{2}^2 = \Arrowvert D*(Ax-b) \Arrowvert_{2}^2$$
- Non è detto infatti che la soluzione \(x_1\) risolva questo nuovo problema, anzi, provando a sostituire ad x \(x_1\) otteniamo come risultato
+ sia equivalente a risolvere il sistema lineare \texttt{(D*A)x = (D*b)}. Tuttavia possiamo notare che nel caso dei minimi quadrati ciò non è sempre vero. Infatti il problema di minimo nel secondo caso risulta essere:
+ $$\min_{x \in \mathbb{R}^n}\Arrowvert (D*A)x-(D*b) \Arrowvert_{2}^2 = \min_{x \in \mathbb{R}^n} \Arrowvert D*(Ax-b) \Arrowvert_{2}^2$$
+ Non è detto infatti che la soluzione \(x_1\) risolva questo nuovo problema, anzi, provando a sostituire \(x_1\) nel secondo sistema si ottiene come risultato
  che la funzione obiettivo ha come valore \(27.8400000000001\) che risulta essere una soluzione ben peggiore rispetto a quella data da \(x_2\). \\
- Possiamo notare che la quantità \(Ax-b\) risulta essere un vettore, per cui usando le proprietà delle norme:
- $$\Arrowvert D*(Ax-b) \Arrowvert_{2}^2 \le \Arrowvert D \Arrowvert_{2}^2 * \Arrowvert Ax-b \Arrowvert_{2}^2 $$
- Quindi il valore dell'obbiettivo del problema di minimo generato dal sistema \texttt{(D*A)x = (D*b)} risulta essere al massimo. 
  Nel caso invece del terzo sistema, possiamo notare che la matrice altro non è che il risultato del prodotto \(\pi*I\).
 Il problema in questo caso risulterà essere:
-$$\min_{x \in \mathbb{R}^n}\Arrowvert (\pi*A)x-(\pi*b) \Arrowvert_{2}^2 = \Arrowvert \pi*(Ax-b) \Arrowvert_{2}^2 =\pi^2 * \Arrowvert Ax-b \Arrowvert_{2}^2 $$
+$$\min_{x \in \mathbb{R}^n}\Arrowvert (\pi*A)x-(\pi*b) \Arrowvert_{2}^2 = \min_{x \in \mathbb{R}^n} \Arrowvert \pi*(Ax-b) \Arrowvert_{2}^2 =\pi^2 * \min_{x \in \mathbb{R}^n} \Arrowvert Ax-b \Arrowvert_{2}^2 $$
 E' possibile notare che tale problema equivale a quello del primo sistema moltiplicato per uno scalare, per cui la soluzione di questo problema di minimo coincide con la soluzione di quella del primo sistema. Infatti le due soluzioni ad eccezzione di qualche decimale coincidono, come si può inoltre notare dalla norma residua calcolata
 ponendo \(x = x_1\) che risulta essere: \(15.7913670417428\), le cifre inesatte sono dovute da piccole imprecisioni delle operazioni in artimetica finita, specialmente considerando l'approssimazione necessaria di \(\pi\), non essendo possible rappresentare il numero interamente in codice macchina.
 
 
 
 \newpage
+\begin{tcolorbox}
 \paragraph{Esercizio 14:}Scrivere una function Matlab,\\
 \texttt{[x,nit] = newton(fun,jacobian,x0,tol,maxit)}\\
 che implementi efficientemente il metodo di Newton per risolvere sistemi di equazioni nonlineari. 
 Curare particolarmente il criterio di arresto, che deve essere analogo a quello usato nel caso scalare. 
 La seconda variabile, se specificata, ritorna il numero di iterazioni eseguite. Prevedere opportuni valori 
 di \textit{default} per gli ultimi due parametri di ingresso.
+\end{tcolorbox}
 \paragraph{Soluzione:} Funzione che calcola  il metodo di Newton per risolvere sistemi di equazioni nonlineari
 \begin{lstlisting}[frame=single]
-function [x,nit] = newtonJ(fun,jacobian,x0,tol,maxit)
-%   [x,nit] = newtonJ(fun,jacobian,x0,tol,maxit)
+function [x,nit] = newton(fun,jacobian,x0,tol,maxit)
+%   [x,nit] = newton(fun,jacobian,x0,tol,maxit)
 %   Funzione che implementa il metodo di Newton per sistemi 
 %   di equazioni nonlineari
 %   
@@ -928,39 +959,44 @@ elseif nargin==3
 elseif nargin==4
     maxit=10e3;
 end
+x=x0;
+nit=-1;
 if tol<0
-    error('la tolleranza non deve essere negativa');
+    error('la tolleranza non puo essere negativa');
 end
 if maxit<=0
     error('maxit deve essere maggiore di 0');
 end
-x=x0;
-nit=-1;
+[n,m] = size(jacobian);
+nf = size(fun);
+if (n~=m)
+    error('La matrice Jacobiana deve essere quadrata');
+end
+if n~=nf
+    error('Il numero di righe del vettore fun e della Jacobiana sono diversi');
+end
 for i=1:maxit
     fx = feval(fun,x);
     f1x = feval(jacobian,x);
-    if f1x == 0, error('Derivata prima uguale a 0'); end
     dx=-f1x\(fx);
     x = x + dx;
-    if abs(x-x0)<=tol*(1+abs(x0))
+    if norm(dx./(1+abs(x)),Inf)<=tol
         nit=i;
         break;
-    else
-        x0 = x;
     end
 end
 
 if nit == -1, disp('Il metodo di Newton per il sistema lineare non converge');end
 return
-end    
+end  
 \end{lstlisting}
 
 
 
 \newpage
+\begin{tcolorbox}
 \paragraph{Esercizio 15:} Usare la function del precedente esercizio per risolvere, a partire dal vettore iniziale nullo, 
-il sistema nonlineare derivante dalla determinazione del punto stazionario della funzione:
-
+il sistema nonlineare derivante dalla determinazione del punto stazionario della funzione:  
 \begin{equation*} 
     f(\boldsymbol{x})=\frac{1}{2}\boldsymbol{x}^TQ\boldsymbol{x}-\boldsymbol{e}^T\left[ \sin(\frac{\pi}{2}\boldsymbol{x})+\boldsymbol{x}\right],\;\;\;\;\;\;
     \boldsymbol{e}=\frac{1}{100}
@@ -989,18 +1025,45 @@ il sistema nonlineare derivante dalla determinazione del punto stazionario della
     \end{pmatrix}
 \end{equation*}
 utilizzando tolleranze \texttt{tol = 1e-3, 1e-8, 1e-13}. Graficare la soluzione e tabulare in modo con- veniente i risultati ottenuti.
+\end{tcolorbox}
 \paragraph{Soluzione:}
 Usando la funzione \texttt{newton} su \(\bigtriangledown f(x)\) (definito in Matlab come \\ \texttt{Q*x-((pi/2).*cos((pi/2)*x)+1).*e}) si ottiene:
-
-
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{asc15.jpg}
+    \end{minipage}
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{gra15.jpg}
+    \end{minipage}
+\end{figure}
+Come si può notare dai grafici usando le tolleranze \texttt{1e-8}, \texttt{1e-13} si ottiene che il gradiente è quasi nullo, ovvero le ascisse \(x_i\) risultano essere un punto stazionario.
+Tabulando infatti la norma 2 dei gradienti con le tolleranze si ha:
+\begin{center}
+    \begin{tabular}{||c | c ||} 
+         \hline      
+         tol & norma del gradiente\\
+         \hline
+         1e-2 & 2.70412063725952e-07 \\
+         \hline
+         1e-08 & 1.55513291374585e-15 \\
+         \hline
+         1e-13 & 1.55513291374585e-15 \\
+         \hline
+    \end{tabular}
+    \end{center}
+\newpage
+\begin{tcolorbox}
 \paragraph{Esercizio 16:}
 Costruire una function, \texttt{lagrange.m}, avente la stessa sintassi della function \texttt{spline}
 di Matlab, che implementi, in modo vettoriale, la forma di Lagrange del polinomio interpolante una
 funzione.
-
+\end{tcolorbox}
 \paragraph{Soluzione:}
 
-\texttt{CODICE Matlab per funzione lagrange}
+\texttt{CODICE Matlab per funzione Lagrange}
 \begin{lstlisting}[frame=single]
 function p = lagrange(x, y, xq)
 %
@@ -1017,6 +1080,12 @@ function p = lagrange(x, y, xq)
 %   p: vettore con i valori calcolati
 %
 n=length(x);
+if length(unique(x))~=n
+    error("Le ascisse non sono distinte tra loro");
+end
+if length(y)~=n
+    error("I vettori x ed y devono avere la stessa lunghezza");
+end
 p=zeros(size(xq));
 for i=1:n
     p=p+y(i)*Lin(i,x,xq);
@@ -1024,7 +1093,6 @@ end
 return
 end
 \end{lstlisting}
-\newpage
 \texttt{CODICE Matlab per funzione Lin}
 
 \begin{lstlisting}[frame=single]
@@ -1054,15 +1122,15 @@ return
 end
 \end{lstlisting}
 
-
+\begin{tcolorbox}
 \paragraph{Esercizio 17:}
 Costruire una function, \texttt{newton.m}, avente la stessa sintassi della function \texttt{spline}
 di Matlab, che implementi, in modo vettoriale, la forma di Newton del polinomio interpolante una
 funzione.
-
+\end{tcolorbox}
 \paragraph{Soluzione:}
 
-\texttt{CODICE Matlab per funzione newton}
+\texttt{CODICE Matlab per funzione Newton}
 \begin{lstlisting}[frame=single]
 function p = newton(x, y, xq)
 %
@@ -1079,6 +1147,12 @@ function p = newton(x, y, xq)
 %   p: vettore con i valori calcolati
 %
 n = length(x)-1;
+if length(unique(x))~=n+1
+    error("Le ascisse non sono distinte tra loro");
+end
+if length(y)~=n+1
+    error("I vettori x ed y devono avere la stessa lunghezza");
+end
 for j=1:n
     for i=n+1:-1:j+1
         y(i)=(y(i)-y(i-1))/(x(i)-x(i-j));
@@ -1088,8 +1162,7 @@ p=horner(x,y,xq);
 return
 end
 \end{lstlisting}
-\newpage
-\texttt{CODICE Matlab per l'algoritmo di horner}
+\texttt{CODICE Matlab per l'algoritmo di Horner}
 \begin{lstlisting}[frame=single]
 function p = horner(x, f, xq)
 %
@@ -1113,12 +1186,15 @@ end
 return
 end
 \end{lstlisting}
+\newpage
+\begin{tcolorbox}
 \paragraph{Esercizio 18:}
 Costruire una function, \texttt{hermite.m}, avente sintassi
 \begin{center}
     \texttt{yy = hermite( xi, fi, f1i, xx )}
 \end{center}
 che implementi, in modo vettoriale, il polinomio interpolante di Hermite.
+\end{tcolorbox}
 \paragraph{Soluzione:}
 
 \texttt{CODICE Matlab per hermite}
@@ -1140,6 +1216,12 @@ function yy = hermite(xi, fi, f1i, xx)
 %   yy: vettore con i valori calcolati
 %
 n=length(xi)-1;
+if length(unique(xi))~=n+1
+    error("Le ascisse non sono distinte tra loro");
+end
+if length(fi)~=n+1 || length(f1i)~=n+1
+    error("I vettori xi, fi e f1i devono avere la stessa lunghezza");
+end
 xi=repelem(xi,2);
 fi=repelem(fi,2);
 fi(2:2:end)=f1i;
@@ -1178,11 +1260,13 @@ for i=n:-1:1
 end
 return
 end
+
 \end{lstlisting}
+\begin{tcolorbox}
 \paragraph{Esercizio 19:}
 Costruire una function Matlab che, specificato in ingresso il grado \emph{n} del polinomio
 interpolante, e gli estremi dell'intervallo [\emph{a}, \emph{b}], calcoli le corrispondenti ascisse di Chebyshev.
-
+\end{tcolorbox}
 \paragraph{Soluzione:} Calcolo delle ascisse di Chebyshev 
 \begin{lstlisting}[frame=single]
 function x = cheby(n,a,b)
@@ -1197,7 +1281,7 @@ function x = cheby(n,a,b)
 %
 %   Output:
 %   x: vettore contentente le ascisse di Chebyshev
-if n<1 || n~=fix(n)
+if n<=0 || n~=fix(n)
     error('n deve essere un numero naturale');
 elseif a>=b
     error('l''intervallo non e'' corretto');
@@ -1206,8 +1290,8 @@ x=(a+b)/2 + cos((2*(n:-1:0)+1)*pi./(2*(n+1))) * (b-a)/2;
 return
 end
 \end{lstlisting}
-
-
+\newpage
+\begin{tcolorbox}
 \paragraph{Esercizio 20:}
 Costruire una function Matlab, con sintassi
 \begin{center}
@@ -1217,7 +1301,7 @@ che approssimi la costante di Lebesgue per l'interpolazione polinomiale sull'int
 i polinomi di grado specificato nel vettore \texttt{nn}, utilizzando ascisse equidistanti, se \texttt{type=0}, o di
 Chebyshev, se \texttt{type=1} (utilizzare 10001 punti equispaziati nell'intervallo \texttt{[a,b]} per ottenere ciascuna componente di ll). 
 Graficare i risultati ottenuti, per \texttt{nn=1:100}, utilizzando \texttt{[a,b]=[0,1]} e \texttt{[a,b]=[-3,7]}. Giustificare i risultati ottenuti.
-
+\end{tcolorbox}
 \paragraph{Soluzione:} Calcolo della costate di Lebesgue:
 
 \begin{lstlisting}[frame=single]
@@ -1236,11 +1320,19 @@ function ll = lebesgue(a,b,nn,type)
 %   Output:
 %   ll: approssimazione costante di Lebesgue ottenuta   
 %
+if nargin<4
+    error("inserire tutti i dati");
+end
+if a>b
+    error('a deve essere piu piccolo di b');
+end
 n=length(nn);
 ll=zeros(1,length(nn));
-f=@(n) linspace(a,b,n+1);
-if type==0
+f=0;
+if type==1
     f=@(n) cheby(n,a,b);
+elseif type==0
+    f=@(n) linspace(a,b,n+1);
 end
 for i=1:n
     xi=f(nn(i));
@@ -1254,12 +1346,31 @@ end
 return
 end
 \end{lstlisting}
-
+Graficando i risulati della funzione eseguita sugli intervalli [0,1] e [-3,7] con type=0 e type=1 si ottiene:
+\begin{figure}[H]
+    \begin{minipage}{0.5\textwidth}
+      \includegraphics[width=\linewidth]{01e.png}
+    \end{minipage}
+    \begin{minipage}{0.5\textwidth}
+      \includegraphics[width=\linewidth]{01c.png}
+    \end{minipage}
+    \begin{minipage}{0.5\textwidth}
+        \includegraphics[width=\linewidth]{37e.png}
+      \end{minipage}
+      \begin{minipage}{0.5\textwidth}
+        \includegraphics[width=\linewidth]{37c.png}
+      \end{minipage}
+ \end{figure}
+Si può vedere come la costante di lebesgue cresca molto velocemente quando vengono usate ascisse equidistanti rispetto alle ascisse di chebyshev. 
+D'altronde \(\Lambda\) cresce almeno come \(O(logx)\), infatti usando ascisse equidistanti
+ si ottiene una crescita esponenziale rispetto a quella ottimale ottenuta 
+ mediante le ascisse di Chebyshev \(\Lambda \approx O(logx)\), come si può notare dal grafico.
+ \newpage
+ \begin{tcolorbox}
 \paragraph{Esercizio 21:}
 Utilizzando le function dei precedenti esercizi, graficare (in semilogy) l'andamento
 errore di interpolazione (utilizzare 10001 punti equispaziati nell'intervallo per ottenerne la stima)
 per la funzione di Runge,
-
 \begin{equation}
     f(x)=\frac{1}{1+x^{2}}, \hspace{1cm} x \in [-5,5]
 \end{equation}
@@ -1267,31 +1378,139 @@ per la funzione di Runge,
 utilizzando sia le ascisse equidistanti che di Chebyshev, per i polinomi interpolanti di grado \texttt{nn=2:2:100}.
 Graficare l'errore di interpolazione anche per i polinomi interpolanti di Hermite di grado \texttt{nn=3:2:99},
 sia utilizzando ascisse equidistanti che ascisse di Chebyshev, nell'intervallo considerato.
-\includegraphics[width=\textwidth]{esercizio21_1.png}
-\includegraphics[width=\textwidth]{esercizio21_2.png}
-\includegraphics[width=\linewidth]{esercizio21_3.png}
+\end{tcolorbox}
 \paragraph{Soluzione:}
-
-
+Stimando l'errore con la norma infinito su 10001 punti si ottiene per Lagrange:
+\begin{figure}[H]
+\includegraphics[width=0.7\textwidth]{lag21.jpg}
+\end{figure}
+\newpage
+Per Newton invece si ottiene:
+\begin{figure}[H]
+\includegraphics[width=0.7\textwidth]{new21.jpg}
+\end{figure}
+E similmente per Hermite si ottiene:
+\begin{figure}[H]
+\includegraphics[width=0.7\textwidth]{her21.jpg}
+\end{figure}
+\newpage
+\begin{tcolorbox}
 \paragraph{Esercizio 22:}
 Costruire una function, \texttt{myspline.m}, avente sintassi
 \begin{center}
 \texttt{yy = myspline( xi, fi, xx, type )}
 \end{center}
+
 dove \texttt{type=0} calcola la \emph{spline} cubica interpolante naturale i punti \texttt{(xi,fi)}, e \texttt{type\textasciitilde=0} calcola quella calcola quella
 \emph{not-a-knot} (default).
-\paragraph{Soluzione:}
-
-
+\end{tcolorbox}
+\paragraph{Soluzione:} \texttt{CODICE Matlab spline cubica}
+\begin{lstlisting}[frame=single]
+function yy = myspline(xi,fi,xx,type)
+%
+% yy=myspline(xi,fi,xx,type)
+%
+% Calcolo dei valori della spine interpolante le ascisse
+%
+%
+% Input:
+% xi: vettori con le ascisse di interpolazione
+% fi: vettore con i valori della funzione per le ascisse
+% xx: vettore con i valori su cui calcolare la spline
+% type: 0 per la spline naturale, diverso da 0 per not-a-knot (default)
+%
+% Output:
+% yy: vettore con i valori della spline calcolati 
+%
+n=length(xi)-1;
+if length(unique(xi))~=n+1
+    error("Le ascisse non sono distinte tra loro");
+end
+if length(fi)~=n+1
+    error("I vettori xi ed fi devono avere la stessa lunghezza");
+end
+h=zeros(1,n);
+df=fi;
+if nargin<4
+    type=1;
+end
+for j=1:2 %differenze divise
+    for i=n+1:-1:j+1
+        df(i)=(df(i)-df(i-1))/(xi(i)-xi(i-j));
+    end
+end
+h=xi(2:n+1)-xi(1:n);
+phi(1:n-1)=h(1:n-1)./(h(1:n-1)+h(2:n));
+eps(1:n-1)=h(2:n)./(h(1:n-1)+h(2:n));
+m(1:n-1)=df(3:n+1)*6;
+b=phi(2:n-1);
+a=2*ones(1,n-1);
+c=eps(1:n-2);
+if type~=0 %cambio della prima riga e ultima riga per not-a-knot
+    m(1)=m(1)*(1-phi(1));
+    m(n-1)=m(n-1)*(1-eps(n-1));
+    c(1)=c(1)-phi(1);
+    a(1)=a(1)-phi(1);
+    b(n-2)=b(n-2)-eps(n-1);
+    a(n-1)=a(n-1)-eps(n-1);
+end
+%risoluzione matrice tridiagonale
+for i=1:n-2
+    b(i)=b(i)/a(i);
+    a(i+1)=a(i+1)-b(i)*c(i);
+    m(i+1)=m(i+1)-b(i)*m(i);   
+end
+m(n-1)=m(n-1)/a(n-1);
+for i=n-2:-1:1
+    m(i)=(m(i)-c(i)*m(i+1))/a(i);
+end
+%condizioni spline naturale e not-a-knot
+if type==0
+    m= [0 m 0];
+else
+    m = [df(3)-m(1)-m(2), m ,df(n+1)-m(n-1)-m(n-2)];
+end
+%calcolo di r e q
+r=zeros(1,n);
+q=zeros(1,n);
+for i=1:n
+    r(i)=fi(i)-((h(i)^2)/6)*m(i);
+    q(i)=(fi(i+1)-fi(i))/h(i)-(h(i)/6)*(m(i+1)-m(i));
+end
+%calcolo spline
+yy=zeros(1,length(xx));
+for i=1:length(xx)
+    for k=1:n
+        if xx(i)>=xi(k) && xx(i)<=xi(k+1)
+            yy(i)=(((xx(i)-xi(k))^3)*m(k+1)+((xi(k+1)-xx(i))^3)*m(k))/( ...
+                6*h(k))+q(k)*(xx(i)-xi(k))+r(k);
+            break
+        end
+    end
+end
+return
+end
+\end{lstlisting}
+\newpage
+\begin{tcolorbox}
 \paragraph{Esercizio 23:}
 Graficare, utilizzando il formato semilogy, l'errore di approssimazione utilizzando le
 \emph{spline} interpolanti naturale e \emph{not-a-knot} per approssimare la funzione di Runge sull'intervallo [-5,5],
 utilizzando una partizione \(\Delta = \{-5=x_0 <...<x_n=5\}\), con ascisse equidistanti e \texttt{n=4:4:400}.
 Utilizzare 10001 punti equispaziati nell'intervallo \text{[-5, 5]} per ottenere la stima dell'errore.
-
+\end{tcolorbox}
 \paragraph{Soluzione:}
-
-
+Graficando la norma infinito per 10001 per stimare l'errore di interpolazione si ottiene:
+\begin{figure}[H]
+    \begin{minipage}{0.5\textwidth}
+      \includegraphics[width=\linewidth]{snaturale.jpg}
+    \end{minipage}
+    \begin{minipage}{0.5\textwidth}
+      \includegraphics[width=\linewidth]{sknot.jpg}
+    \end{minipage}
+ \end{figure}
+E' possibile notare come, rispetto ai polinomi interpolanti, l'errore diminuisce all'aumentare delle ascisse equidistanti.
+\begin{tcolorbox}
 \paragraph{Esercizio 24:}
 E' noto che un fenomeno fisico evolve come \(y = x^{n}\) con \emph{n} incognito. 
 Il file \texttt{data.mat} contiene 1000 coppie di dati \((x_{i},y_{i})\), in cui la seconda componente è affetta da un errore con distribuzione Gaussiana a media nulla e varianza “piccola”. Utilizzando un opportuno polinomio
@@ -1299,6 +1518,7 @@ di approssimazione ai minimi quadrati, stimare il grado \emph{n}. Argomentare il
 graficando la norma del residuo rispetto a valori crescenti di \emph{n}. E richiesto il codice Matlab dell'algoritmo 
 che avrete implementato (potete utilizzare, se lo ritenete opportuno, la function \texttt{polyfit}
 di Matlab).
+\end{tcolorbox}
 \paragraph{Soluzione:} 
 Dato che l'incognita dell'equazione è l'esponente, conviene innanzitutto riscriverla utilizzando le proprietà dei logaritmi: \\
 $$ y=x^{n} \Rightarrow ln(y)=ln(x^{n}) \Rightarrow ln(y)=nln(x)$$
@@ -1308,9 +1528,22 @@ Per meglio transformare i dati in modo che si avvicinino una retta, conviene usa
  si potrebbe infatti approssimare \(ln(x)\) con la retta tangente al punto \(x_{0}=1\) ottenendo così:
 \(ln(y) \approx n(x-1)\). Un'ulteriore considerazione da fare è quella di scartare le misurazioni \(y_i\) negative, 
 essendo le ascisse \(x_i\) tutte positive e di conseguenza anche \(x_i^{n}\), ed inoltre non sarebbe possibile calcolare \(log(y)\).
+\newpage
 L'algoritmo descritto è stato così implementato:
 \begin{lstlisting}[frame=single]
 function n = estimate(data)
+%
+% n = estimate(data)
+%
+% Stima il grado di n date m coppie di dati per y=x^n
+%
+%
+% Input:
+% data: matrice mx2 con le misurazioni del problema
+%
+% Output:
+% n: grado stimato del polinomio
+%
 fixedData=data;
 fixedData(fixedData(:,2)<0,:)=[];
 x=fixedData(:,1);
@@ -1320,13 +1553,15 @@ n=r(1);
 return
 end
 \end{lstlisting}
-Si ottiene quindi che il grado \texttt{n} è 5, come si può notare graficando in \texttt{semilogy} l'errore (approsimato con la norma infinito) del residuo rispetto ad n: \\
-\includegraphics[width=\linewidth]{errori24.jpg}
+Si ottiene quindi che il grado \texttt{n} è 5, come si può notare graficando in \texttt{semilogy} l'errore (approsimato con la norma 2) del residuo rispetto ad n: \\
+\includegraphics[width=0.7\textwidth]{errori24.jpg} \\
 difatti esso è minimo per \texttt{n=5}.
+\newpage
+\begin{tcolorbox}
 \paragraph{Esercizio 25:}
 Costruire una function Matlab che, dato in input \emph{n}, restituisca i pesi della quadratura della formula di Newton-Cotes di grado \emph{n}. Tabulare, quindi, i pesi delle formule di grado
 1, 2,. . . , 7 e 9 (come numeri razionali).
-
+\end{tcolorbox}
 
 \paragraph{Soluzione:}
 
@@ -1365,33 +1600,33 @@ end
 
 \begin{center}
 \begin{adjustbox}{width=\textwidth}
-\begin{tabular}{||c || c | c | c | c | c | c | c | c ||} 
+\begin{tabular}{||c || c | c | c | c | c | c | c | c | c | c ||} 
      \hline
      
-     n & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7\\
+     n & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9\\
      \hline\hline
-     1 & 1/2 & 1/2 & & & & & & \\ 
+     1 & 1/2 & 1/2 & & & & & & & &\\ 
      \hline
-     2 & 1/3 & 4/3 & 1/3 & & & & & \\
+     2 & 1/3 & 4/3 & 1/3 & & & & & & &\\
      \hline
-     3 & 3/8 & 9/8 & 9/8 & 3/8 & & & & \\
+     3 & 3/8 & 9/8 & 9/8 & 3/8 & & & & & &\\
      \hline
-     4 & 14/45 & 64/45 & 8/15 & 64/45 & 14/45 & & & \\
+     4 & 14/45 & 64/45 & 8/15 & 64/45 & 14/45 & & & & &\\
      \hline
-     5 & 95/288 & 125/96 & 125/144 & 125/144 & 125/96 & 95/288 & & \\ 
+     5 & 95/288 & 125/96 & 125/144 & 125/144 & 125/96 & 95/288 & & & &\\ 
      \hline
-     6 & 41/140 & 54/35 & 27/140 & 68/35 & 27/140 & 54/35 & 41/140 & \\  
+     6 & 41/140 & 54/35 & 27/140 & 68/35 & 27/140 & 54/35 & 41/140 & & &\\  
      \hline
-     7 & 1073/3527 & 810/559 & 343/640 & 649/536 & 649/536 & 343/640 & 810/559 & 1073/3527\\  
+     7 & 1073/3527 & 810/559 & 343/640 & 649/536 & 649/536 & 343/640 & 810/559 & 1073/3527 & &\\  
      \hline
-     9 & 130/453 & 1374/869 & 243/2240 & 5287/2721 & 704/1213 & 704/121 & 5287/2721 & 130/453\\
+     9 & 130/453 & 1374/869 & 243/2240 & 5287/2721 & 704/1213 & 704/121 & 5287/2721 & 243/2240 & 1374/869 & 130/453\\
      \hline
 \end{tabular}
 \end{adjustbox}
 \end{center}
 
 
-
+\begin{tcolorbox}
 \paragraph{Esercizio 26:}
 Scrivere una function Matlab, \\
 
@@ -1407,6 +1642,7 @@ multiplo pari di \texttt{k}, in cui:
     \item \texttt{If} è l’approssimazione dell’integrale ottenuta;
     \item \texttt{err} è la stima dell’errore di quadratura.
 \end{itemize}
+\end{tcolorbox}
 \paragraph{Soluzione:} Calcolo della formula composita di Newton-Cotes di grado \texttt{k} su \texttt{n+1} ascisse equidistanti.
 \begin{lstlisting}[frame=single]
 function [If,err] = composita(fun, a, b, k, n)
@@ -1432,12 +1668,13 @@ end
 err=abs(IfH-If)/(2^(k+u)-1);
 \end{lstlisting}
 
-
-
+\newpage
+\begin{tcolorbox}
 \paragraph{Esercizio 27:}
 Utilizzare la function \texttt{composita} per ottenere l’approssimazione dell’integrale\\
 $$\int_{0}^{1}(\sum_{i=1}^{5}i\cos(2\pi{ix})-e^{i}\sin(2(\pi{i}+0.1)x))dx$$
 con le formule composite di Newton-Cotes di grado \texttt{k=1,2,3,6}. Per tutte, utilizzare \texttt{n=12}.
+\end{tcolorbox}
 \paragraph{Soluzione:}
 
 Utilizzando le formule composite di Newton-Cotes con n=12 per approssimare l'integrale si vanno ad ottenere i seguenti risultati: \\
@@ -1456,7 +1693,6 @@ Utilizzando le formule composite di Newton-Cotes con n=12 per approssimare l'int
         \hline
         6 & -0.702525851480416 & 0.002428474323110 \\
         \hline
-        \hline
     \end{tabular}
     \end{center}
 Si può notare come i risultati risultano essere imprecisi e discordanti tra loro, infatti andando a graficare la funzione in esame negli estremi dell'intervallo di integrazione \\
@@ -1466,8 +1702,10 @@ Aumentando il numero di quest'ultime si può ridurre ulteriormente l'errore, d'a
 $$E_k^{(n)} = v_k f^{(k+u)}(\xi)\biggl(\frac{b-a}{k}\biggr)\biggl(\frac{b-a}{n}\biggr)^{(k+u)} con  \xi \in [a,b]$$
 che sappiamo tende a 0 per n che tende ad infinito, altrimenti si possono usare pure le formule adattive.
 \newpage
+\begin{tcolorbox}
 \paragraph{Esercizio 28:}
 Implementare la formula composita adattativa di Simpson.
+\end{tcolorbox}
 \paragraph{Soluzione:} Calcolo della formula adattiva di Simpson
 \begin{lstlisting}[frame=single]
 function [I2,vf] = adapsim(a,b,f,tol,fa,f1,fb)
@@ -1520,8 +1758,10 @@ end
 \end{lstlisting}
 
 \newpage
+\begin{tcolorbox}
 \paragraph{Esercizio 29:}
 Implementare la formula composita adattativa di Newton-Cotes di grado \texttt{k=4}.
+\end{tcolorbox}
 \paragraph{Soluzione:} Calcolo della formula adattiva di Newton-Cotes di grado k=4.
 \begin{lstlisting}[frame=single]
 function [I2,vf] = adapquad(a,b,f,tol,fa,f1,f2,f3,fb)
@@ -1578,11 +1818,12 @@ if e>tol
     vf=vf+vf1+vf2;
 end
 return
-end    
+end
 \end{lstlisting}
 
 
 \newpage
+\begin{tcolorbox}
 \paragraph{Esercizio 30:}
 Confrontare le formule adattative degli ultimi due esercizi, tabulando il numero
 di valutazioni funzionali effettuate, rispetto alla tolleranza \texttt{tol = 1e-2, 1e-3, ..., 1e-9}, per
@@ -1590,63 +1831,59 @@ ottenere l’approssimazione dell’integrale \\
 $$\int_{10^{-5}}^{1}x^{-1}\cos(\log(x^{-1}))dx\equiv\sin(\log(10^{5}))$$
 Costruire un’altra tabella, in cui si tabula l’errore vero (essendo l’integrale noto, in questo caso)
 rispetto a \texttt{tol}.
+\end{tcolorbox}
 \paragraph{Soluzione:}
+Tabulando le valutazioni funzionali si ottiene:
 \begin{center}
-\begin{tabular}{||c || c | c | c | c ||} 
+\begin{tabular}{||c || c | c ||} 
+    \hline
+    tol &  valutazioni funzionali n=2 & valutazioni funzionali n=4 \\
     \hline
     \hline
-     &  \multicolumn{2}{|c|}{n=2} & \multicolumn{2}{|c|}{n=4}\\
-     \hline
-
-    tol & valore & valutazioni funzionali & valore & valutazioni funzionali \\
+    1e-2 & 201 & 113 \\
     \hline
-    1e-2 & -0.869425809078715 & 201 & -0.818445828479865 & 113 \\
+    1e-3 & 333 & 121 \\
     \hline
-    1e-3 & -0.869589504976433 & 333 & -0.863917726701441 & 121 \\
+    1e-4 & 605 & 129 \\
     \hline
-    1e-4 & -0.869158635812636 & 605 & -0.868851170727444 & 129 \\
+    1e-5 & 1061 & 137 \\
     \hline
-    1e-5 & -0.869134625866697 & 1061 & -0.869126106965213 & 137 \\
+    1e-6 & 1869 & 145 \\
     \hline
-    1e-6 & -0.869132581815646 & 1869 & -0.869134425591871 & 145 \\
+    1e-7 & 3277 & 265 \\
     \hline
-    1e-7 & -0.869132317617779 & 3277 & -0.869132234992719 & 265 \\
+    1e-8 & 5921 & 345 \\
     \hline
-    1e-8 & -0.869132284264119 & 5921 & -0.869132276557698 & 345 \\
-    \hline
-    1e-9 & -0.869132281362861 & 10589 & -0.869132278121886 & 473 \\
-    \hline
+    1e-9 & 10589 & 473 \\
     \hline
 \end{tabular}
 \end{center}
-
+Mentre tabulando l'errore effettivo si ottiene:
 \begin{center}
     \begin{tabular}{||c || c | c | c | c ||} 
         \hline
-        \hline
          &  \multicolumn{2}{|c|}{n=2} & \multicolumn{2}{|c|}{n=4}\\
          \hline
-    
         tol & valore & errore & valore & errori \\
+        \hline
         \hline
         1e-2 & -0.869425809078715 & 2.935280256943784e-04 & -0.818445828479865 & 0.050686452573156 \\
         \hline
         1e-3 & -0.869589504976433 & 4.572239234117426e-04 & -0.863917726701441 & 0.005214554351580 \\
         \hline
-        1e-4 & -0.869158635812636 & 2.635475961443312e-05 & -0.868851170727444 & 0.000281110325577 \\
+        1e-4 & -0.869158635812636 & 2.635475961443312e-05 & -0.868851170727444 & 2.811103255769831e-04 \\
         \hline
-        1e-5 & -0.869134625866697 & 2.344813675669855e-06 & -0.869126106965213 & 0.000006174087808 \\
+        1e-5 & -0.869134625866697 & 2.344813675669855e-06 & -0.869126106965213 & 6.174087807786499e-06 \\
         \hline
-        1e-6 & -0.869132581815646 & 3.007626251383400e-07 & -0.869134425591871 & 0.000002144538850  \\
+        1e-6 & -0.869132581815646 & 3.007626251383400e-07 & -0.869134425591871 & 2.144538849502276e-06  \\
         \hline
-        1e-7 & -0.869132317617779 & 3.656475811020243e-08 & -0.869132234992719 & 0.000000046060302 \\
+        1e-7 & -0.869132317617779 & 3.656475811020243e-08 & -0.869132234992719 & 4.606030246101511e-08 \\
         \hline
-        1e-8 & -0.869132284264119 & 3.211098165145643e-09 & -0.869132276557698 & 0.000000004495323 \\
+        1e-8 & -0.869132284264119 & 3.211098165145643e-09 & -0.869132276557698 & 4.495323446818134e-09 \\
         \hline
-        1e-9 & -0.869132281362861 & 3.098394874001542e-10 & -0.869132278121886 & 0.000000002931135 \\
-        \hline
+        1e-9 & -0.869132281362861 & 3.098394874001542e-10 & -0.869132278121886 & 2.931135223427361e-09 \\
         \hline
     \end{tabular}
     \end{center}
-
+Da cui si può notare che le valutazioni funzionali per Simpson sono molto maggiori per le formule adattive con \texttt{n=4}, tuttavia con \texttt{n=2} si riesce a raggiungere un errore inferiore rispetto all'altra formula a parità di tolleranza.
 \end{document}
